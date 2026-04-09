@@ -1,0 +1,32 @@
+h1{
+    color:chartreuse;
+    background-color:rgb(10, 2, 1);
+    
+}
+#nome{
+    background-color: cornflowerblue;
+}
+
+.texto {
+    background-color: coral;
+    }
+
+p{
+    color:blue;
+}
+
+.div-para-fora{
+    background-color: black;
+    display: flex;
+
+}
+.div-para-dentro{
+    background-color: chartreuse;
+    height: 50%;
+    width: 50%;
+    position: relative;
+}
+
+.texto-centrazizado{
+    text-align: center;
+}
