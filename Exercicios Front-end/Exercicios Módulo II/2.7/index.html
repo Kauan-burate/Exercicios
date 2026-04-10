@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Box Model</title>
+  <style>
+
+
+    .card{
+        width: 200px;
+        height: 200px;
+        padding: 20px;
+        border: 10px solid black;
+        
+    }
+
+    .card[value ="1"]{
+        background-color: blue;
+        padding: 20px;
+        border: 10px solid black;
+        
+
+    }
+    .card[value ="2"]{
+        background-color: red;
+        border-bottom: solid 10px;
+        border-top: solid 20px;
+        border-left: solid 10px;
+        border-right: solid 10px;
+        margin-left: 260px;
+
+    }
+    .card[value ="3"]{
+        background-color: green;
+        
+    }  
+
+
+  </style>
+</head>
+
+<body>
+    <div class="card" value="1">
+        
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at sapien porttitor urna elementum lacinia. In
+        id magna pulvinar, ultricies lorem id, vehicula elit. Aliquam eu luctus nisl, vitae pellentesque magna. Phasellus
+        dolor metus, laoreet ac convallis sit amet, efficitur sed dolor.</p>
+            
+    </div>
+
+    <div class="card" value="2">
+        
+    </div>
+
+    <div class="card" value="3">
+
+
+    </div>
+
+
+
+
+  <!-- TODOs:
+    
+   
+    - Defina **cores de fundo (`background-color`) diferentes** para cada uma das caixas (usei `cadetblue`, `gold` e `indianred`).
+    - Adicione um elemento **parágrafo (`<p>`)** dentro da primeira `div` e insira o seguinte texto:
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at sapien porttitor urna elementum lacinia. In
+        id magna pulvinar, ultricies lorem id, vehicula elit. Aliquam eu luctus nisl, vitae pellentesque magna. Phasellus
+        dolor metus, laoreet ac convallis sit amet, efficitur sed dolor.
+    - Defina a primeira `div` para ter **20px de `padding` em toda a volta** com uma **`border` preta de 10px**.
+    - Ajuste o estilo do elemento **`<p>`** para **remover todas as `margins`**.
+    - *Dica: Use o inspector CSS no Chrome para ajudar.*
+    - Defina a segunda `div` para ter uma **`border` de 20px no topo (`top`) e na base (`bottom`)** e **10px de `border` na esquerda (`left`) e na direita (`right`)**. (Veja a imagem objetivo)
+    - Defina a terceira `div` para ter uma **`border` de 10px**.
+    - Defina as **`margins`** para as `divs` de modo que o canto de cada caixa toque a outra. (Veja a imagem objetivo)
+-->
+
+</body>
+
+</html>
