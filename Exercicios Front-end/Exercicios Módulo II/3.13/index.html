@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Flag Project</title>
+  <style>
+    /* Escreva seu CSS Aqui */
+    .flag{ /* Quadrado vermelho */
+        width: 900px;
+        height: 600px;
+        background-color: #ce1126;
+        position: relative;
+        margin-top: 0px;
+    }
+    .flag > p{ /* Texto the flag */
+        text-align: center;
+        font-size: 90px;
+        color: #ffffff;
+        
+    }
+    .flag > div{ /* Quadrado azul */
+        width: 900px;
+        height: 300px;
+        background-color: #002868;
+        position: absolute;
+        position: relative;
+    }
+    .flag > div > div{ /* Circulo branco */
+        background-color: #ffffff;
+        border-radius: 50%;
+        position : absolute;
+        width: 200px;
+        height: 200px;
+        left: 350px;
+        top: 50px;
+        
+    
+    }
+    .flag > div > div > p{ /* Texto of Laos */
+        text-align: center;
+        font-size: 80px;
+        margin-top: 0px;
+    }
+
+
+
+
+    
+  </style>
+</head>
+
+<body>
+  <div class="flag">
+    <p>The Flag</p>
+    <div>
+      <div>
+        <p>of Laos</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

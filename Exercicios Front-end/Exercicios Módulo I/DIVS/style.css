@@ -1,10 +1,10 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
-    background-color:beige;
+    background-color:palevioletred;
     margin: 0;
 }
 .header{
-    background-color: grey;
+    background-color:pink;
     color: aliceblue;
     text-align: center;
     padding: 20px;
@@ -34,7 +34,7 @@ body{
 }
 
 .footer{
-    background-color: gray;
+    background-color:pink;
     color:aliceblue;
     text-align: center;
     padding: 10px;
