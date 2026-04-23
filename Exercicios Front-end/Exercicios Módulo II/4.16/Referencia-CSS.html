@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo II: Estilizando a Web (CSS)</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f7f5;
+    --bg3: #efeeeb;
+    --surface: #ffffff;
+    --border: #e3e2df;
+    --border2: #d3d2ce;
+    --text: #1a1a1a;
+    --text2: #5a5a5a;
+    --text3: #8a8a8a;
+    --accent: #2f80ed;
+    --accent-bg: #eef4fd;
+    --green: #0f7b3d;
+    --green-bg: #edf7f2;
+    --amber: #7a4f00;
+    --amber-bg: #fdf6e3;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --purple: #6b46c1;
+    --purple-bg: #f5f0ff;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* ── CABEÇALHO ── */
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .module-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .page-title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .page-intro {
+    font-size: 1.05rem;
+    color: var(--text2);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+
+  /* ── SUMÁRIO ── */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .toc-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 0.8rem;
+  }
+
+  .toc ol {
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc li { font-size: 0.9rem; }
+
+  .toc a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .toc a:hover { text-decoration: underline; }
+
+  /* ── SEÇÕES ── */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4rem 0;
+  }
+
+  /* ── TIPOGRAFIA ── */
+  h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 1.2rem; }
+  h2 { font-size: 1.4rem; font-weight: 600; margin: 2.5rem 0 1rem; }
+  h3 { font-size: 1.1rem; font-weight: 600; margin: 2rem 0 0.8rem; color: var(--text); }
+
+  p { color: var(--text2); margin-bottom: 1rem; line-height: 1.75; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { color: var(--text2); margin-bottom: 0.3rem; line-height: 1.7; }
+  li strong { color: var(--text); font-weight: 600; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--red);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: 0.8rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+  }
+
+  .callout-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; }
+  .callout-body p { margin: 0; font-size: 0.93rem; }
+
+  .callout.blue { background: var(--accent-bg); border-color: #bdd4f7; }
+  .callout.green { background: var(--green-bg); border-color: #b7e2cc; }
+  .callout.amber { background: var(--amber-bg); border-color: #f0dfa0; }
+
+  /* ── BLOCO DE CÓDIGO ── */
+  .code-block {
+    background: #1e1e2e;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 1.2rem 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: #2a2a3e;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .code-lang {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7c7c99;
+  }
+
+  .code-block pre {
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    color: #cdd6f4;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #cba6f7; }   /* keywords */
+  .sel { color: #89b4fa; }  /* seletores */
+  .prop { color: #94e2d5; } /* propriedades */
+  .val { color: #fab387; }  /* valores */
+  .str { color: #a6e3a1; }  /* strings */
+  .cmt { color: #6c7086; font-style: italic; }
+  .tag { color: #f38ba8; }  /* html tags */
+  .attr { color: #f9e2af; } /* atributos */
+  .num { color: #fab387; }  /* números */
+
+  /* ── COLAPSÁVEL ── */
+  .collapse-wrap { margin: 1.2rem 0; }
+
+  .collapse-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text2);
+    text-align: left;
+    transition: background 0.15s;
+  }
+
+  .collapse-toggle:hover { background: var(--bg3); color: var(--text); }
+
+  .collapse-toggle .arrow {
+    margin-left: auto;
+    font-size: 11px;
+    transition: transform 0.2s;
+    color: var(--text3);
+  }
+
+  .collapse-toggle.open .arrow { transform: rotate(90deg); }
+  .collapse-toggle.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+
+  .collapse-body {
+    display: none;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .collapse-body.open { display: block; }
+  .collapse-body .code-block { margin: 0; border-radius: 0; }
+
+  /* ── DEMO VISUAL ── */
+  .demo {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .demo-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-a { background: #ffbd2e; }
+  .dot-g { background: #28ca41; }
+
+  .demo-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 580px) { .demo-split { grid-template-columns: 1fr; } }
+
+  .demo-code-pane {
+    background: #1e1e2e;
+    padding: 1.2rem 1.4rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: #cdd6f4;
+    overflow-x: auto;
+    border-right: 1px solid var(--border);
+  }
+
+  .demo-result {
+    padding: 1.5rem;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 130px;
+  }
+
+  .demo-result.dark { background: #1a1a2e; }
+  .demo-result.gray { background: #f4f4f9; }
+  .demo-result.start { align-items: flex-start; justify-content: flex-start; }
+
+  /* ── TABELA ── */
+  .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  th {
+    background: var(--bg2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  td:first-child { font-family: var(--mono); font-size: 12.5px; color: var(--purple); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg2); }
+
+  /* ── PRECEDÊNCIA BADGES ── */
+  .prec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 1rem 0;
+  }
+
+  .prec-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+
+  .prec-rank {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .prec-item.p1 { background: #fff0f0; border-color: #fcc; }
+  .prec-item.p1 .prec-rank { background: var(--red); color: white; }
+  .prec-item.p2 { background: #fff8f0; border-color: #fde8c0; }
+  .prec-item.p2 .prec-rank { background: #e67e22; color: white; }
+  .prec-item.p3 { background: var(--amber-bg); border-color: #f0dfa0; }
+  .prec-item.p3 .prec-rank { background: #f39c12; color: white; }
+  .prec-item.p4 { background: var(--accent-bg); border-color: #bdd4f7; }
+  .prec-item.p4 .prec-rank { background: var(--accent); color: white; }
+  .prec-item.p5 { background: var(--bg2); border-color: var(--border); }
+  .prec-item.p5 .prec-rank { background: var(--text3); color: white; }
+  .prec-item.p6 { background: var(--bg2); border-color: var(--border); }
+  .prec-item.p6 .prec-rank { background: var(--border2); color: var(--text2); }
+
+  .prec-label { font-weight: 500; color: var(--text); }
+  .prec-desc { color: var(--text3); font-size: 0.82rem; margin-left: auto; }
+
+  /* ── BOX MODEL VISUAL ── */
+  .boxmodel-viz {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+    background: white;
+  }
+
+  /* ── DISPLAY DEMOS ── */
+  .display-demo-area {
+    padding: 1rem 1.2rem;
+    background: white;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+  }
+
+  /* ── POSITION DEMO ── */
+  .pos-demo {
+    position: relative;
+    height: 160px;
+    background: #f4f4f9;
+    border: 1px dashed #ccc;
+    font-family: Arial;
+    font-size: 12px;
+  }
+
+  /* ── FLOAT DEMO ── */
+  .float-demo-area {
+    padding: 1rem;
+    background: white;
+    font-family: Arial;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── FLEXBOX DEMO ── */
+  .flex-demo {
+    background: white;
+    padding: 1rem;
+    font-family: Arial;
+    font-size: 12px;
+  }
+
+  /* ── NAV STICKY ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .sticky-nav::-webkit-scrollbar { display: none; }
+
+  .sticky-nav a {
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text3);
+    text-decoration: none;
+    padding: 0 14px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .sticky-nav a:hover { color: var(--text); }
+  .sticky-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="sticky-nav" id="nav">
+  <a href="#intro">Introdução</a>
+  <a href="#seletores">Seletores</a>
+  <a href="#cascata">Cascata</a>
+  <a href="#seletores-avancados">Sel. Avançados</a>
+  <a href="#box-model">Box Model</a>
+  <a href="#display">Display</a>
+  <a href="#posicionamento">Posicionamento</a>
+  <a href="#float">Float</a>
+  <a href="#flexbox">Flexbox</a>
+  <a href="#responsividade">Responsividade</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <span class="module-tag">Módulo II</span>
+    <h1 class="page-title">Estilizando a Web (CSS)</h1>
+    <p class="page-intro">Depois de estruturar a sua página com HTML, o próximo passo é dar vida a ela com o <strong>CSS</strong> (<strong>C</strong>ascading <strong>S</strong>tyle <strong>S</strong>heets). Se o HTML é o esqueleto, o CSS é a pele, as roupas, a maquiagem e todos os detalhes visuais que tornam a sua página atraente e agradável.</p>
+  </header>
+
+  <nav class="toc">
+    <p class="toc-title">Nesta página</p>
+    <ol>
+      <li><a href="#intro">Introdução ao CSS</a></li>
+      <li><a href="#seletores">Seletores e a Cascata</a></li>
+      <li><a href="#cascata">Especificidade e Precedência</a></li>
+      <li><a href="#seletores-avancados">Seletores Avançados</a></li>
+      <li><a href="#box-model">Box Model</a></li>
+      <li><a href="#display">A Propriedade Display</a></li>
+      <li><a href="#posicionamento">Posicionamento CSS</a></li>
+      <li><a href="#float">CSS Float</a></li>
+      <li><a href="#flexbox">Flexbox</a></li>
+      <li><a href="#responsividade">Sites Responsivos</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       1. INTRODUÇÃO
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="intro">
+    <h1>Dando Estilo à Página — Introdução ao CSS</h1>
+
+    <h2>❓ O que é o CSS e como ele funciona?</h2>
+    <p>O CSS funciona como um conjunto de regras que dizem ao navegador como apresentar os elementos HTML. Ele controla cores, tamanhos, espaçamentos, fontes, posicionamento e muitos outros aspectos visuais.</p>
+    <p>Uma regra CSS é formada por duas partes principais:</p>
+    <ul>
+      <li><strong>Seletor:</strong> aponta para qual(is) elemento(s) HTML a regra deve ser aplicada. Pode ser uma tag (<code>p</code>, <code>h1</code>), uma classe (<code>.minha-classe</code>) ou um ID (<code>#meu-id</code>).</li>
+      <li><strong>Declaração:</strong> define o estilo a ser aplicado, formada por uma <strong>propriedade</strong> e um <strong>valor</strong>, separados por dois pontos (<code>:</code>).</li>
+    </ul>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>sintaxe básica</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">p</span> {
+  <span class="prop">color</span>: <span class="val">blue</span>;
+  <span class="prop">font-size</span>: <span class="val">16px</span>;
+}
+
+<span class="cmt">/* seletor { propriedade: valor; } */</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:6px;">
+          <p style="color:blue;font-size:16px;font-family:Arial;margin:0">Este parágrafo ficou azul.</p>
+          <p style="color:blue;font-size:16px;font-family:Arial;margin:0">Este também, pois o seletor <code style="font-size:11px">p</code> pega todos.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Formas de Aplicar CSS</h2>
+    <p>Existem três maneiras principais de conectar o CSS ao seu HTML:</p>
+
+    <h3>CSS Inline</h3>
+    <p>Aplicado diretamente na tag HTML usando o atributo <code>style</code>. Deve ser evitado em projetos, pois mistura estrutura com estilo e dificulta a manutenção.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>css inline</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;p</span> <span class="attr">style</span>=<span class="str">"color: red; font-weight: bold;"</span><span class="tag">&gt;</span>
+  Este texto é vermelho e negrito.
+<span class="tag">&lt;/p&gt;</span></pre></div>
+        <div class="demo-result">
+          <p style="color:red;font-weight:bold;font-family:Arial;font-size:14px;margin:0">Este texto é vermelho e negrito.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>CSS Interno</h3>
+    <p>Feito usando a tag <code>&lt;style&gt;</code> dentro do <code>&lt;head&gt;</code>. Útil para estilizar um único documento HTML, mas não recomendado para sites com múltiplas páginas.</p>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">html</span></div>
+      <pre><span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;style&gt;</span>
+    <span class="sel">h1</span> {
+      <span class="prop">color</span>: <span class="val">red</span>;
+    }
+  <span class="tag">&lt;/style&gt;</span>
+<span class="tag">&lt;/head&gt;</span></pre>
+    </div>
+
+    <h3>CSS Externo (Recomendado)</h3>
+    <p>Reside em um arquivo separado com extensão <code>.css</code>. Para vincular ao HTML, adiciona-se um elemento <code>&lt;link&gt;</code> dentro do <code>&lt;head&gt;</code>. É o método mais usado no desenvolvimento web.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>css externo</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* No arquivo index.html */</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span>
+        <span class="attr">href</span>=<span class="str">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="cmt">/* No arquivo style.css */</span>
+<span class="sel">body</span> {
+  <span class="prop">background-color</span>: <span class="val">#f0f0f0</span>;
+  <span class="prop">font-family</span>: <span class="val">Arial, sans-serif</span>;
+}</pre></div>
+        <div class="demo-result gray" style="flex-direction:column;align-items:flex-start;">
+          <p style="font-size:12px;color:#666;font-family:Arial;margin:0">O fundo e a fonte da página seriam alterados globalmente pelo arquivo <code>style.css</code> vinculado.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Exemplo Prático: Estilizando nossa primeira página</h3>
+
+    <div class="collapse-wrap">
+      <button class="collapse-toggle" onclick="toggleCollapse(this)">
+        📄 Ver código completo do exemplo
+        <span class="arrow">▶</span>
+      </button>
+      <div class="collapse-body">
+        <div class="code-block">
+          <div class="code-block-header"><span class="code-lang">css — style.css</span></div>
+          <pre><span class="sel">body</span> {
+  <span class="prop">font-family</span>: <span class="val">Arial, sans-serif</span>;
+  <span class="prop">background-color</span>: <span class="val">#f4f4f4</span>;
+  <span class="prop">margin</span>: <span class="val">20px</span>;
+}
+
+<span class="sel">h1</span> {
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="sel">p</span> {
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;
+  <span class="prop">color</span>: <span class="val">#666</span>;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       2. SELETORES
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="seletores">
+    <h1>Seletores e a Cascata</h1>
+
+    <h2>🫵 Seletores: Onde o CSS Encontra o HTML</h2>
+    <p>Um seletor é o que "seleciona" os elementos HTML que você quer estilizar. A escolha do seletor certo é fundamental para a organização do seu código.</p>
+
+    <h3>Seletor de Tipo (ou de Elemento)</h3>
+    <p>Seleciona todos os elementos de uma determinada tag.</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>seletor de tipo</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">p</span> {
+  <span class="prop">color</span>: <span class="val">gray</span>;
+}
+
+<span class="cmt">/* Afeta TODOS os &lt;p&gt; da página */</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <p style="color:gray;font-family:Arial;font-size:13px;margin:0">Primeiro parágrafo — cinza.</p>
+          <p style="color:gray;font-family:Arial;font-size:13px;margin:0">Segundo parágrafo — também cinza.</p>
+          <p style="color:gray;font-family:Arial;font-size:13px;margin:0">Todos os &lt;p&gt; são afetados.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Seletor de Classe</h3>
+    <p>O tipo de seletor mais comum. Você adiciona o atributo <code>class</code> no HTML e o seleciona no CSS usando um ponto (<code>.</code>). Classes podem ser reutilizadas em quantos elementos você quiser.</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>seletor de classe</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* HTML */</span>
+<span class="tag">&lt;h2</span> <span class="attr">class</span>=<span class="str">"titulo-destaque"</span><span class="tag">&gt;</span>Título<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"titulo-destaque"</span><span class="tag">&gt;</span>Parágrafo<span class="tag">&lt;/p&gt;</span>
+
+<span class="cmt">/* CSS */</span>
+<span class="sel">.titulo-destaque</span> {
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">color</span>: <span class="val">purple</span>;
+}</pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:6px;">
+          <h2 style="font-weight:bold;color:purple;font-family:Arial;font-size:15px;margin:0">Título importante</h2>
+          <p style="font-weight:bold;color:purple;font-family:Arial;font-size:13px;margin:0">Este parágrafo também é destaque</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Seletor de ID</h3>
+    <p>Usado para selecionar um <strong>único</strong> elemento específico na página. No CSS, o seletor usa o sinal de hash (<code>#</code>). Uma regra crucial: cada <code>id</code> deve ser <strong>único</strong> em toda a página.</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>seletor de id</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* HTML */</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"cabecalho-principal"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>Meu Website<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">/* CSS */</span>
+<span class="sel">#cabecalho-principal</span> {
+  <span class="prop">background-color</span>: <span class="val">#333</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">20px</span>;
+}</pre></div>
+        <div class="demo-result" style="padding:0;align-items:stretch;justify-content:stretch;">
+          <div style="background:#333;color:white;padding:20px;width:100%;font-family:Arial;">
+            <h1 style="font-size:18px;margin:0">Meu Website</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       3. CASCATA E ESPECIFICIDADE
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="cascata">
+    <h1>Entendendo a Cascata e a Especificidade</h1>
+
+    <p>A palavra "cascata" no nome do CSS não está ali por acaso. A <strong>Cascata</strong> é a ordem de precedência que o navegador usa para decidir qual regra aplicar quando várias estão "competindo" pelo mesmo elemento.</p>
+    <p>O seletor com maior <strong>especificidade</strong> vence. Pense na especificidade como um sistema de pontuação — a regra com a pontuação mais alta é aplicada.</p>
+
+    <div class="prec-list">
+      <div class="prec-item p1"><div class="prec-rank">1</div><span class="prec-label"><code>!important</code></span><span class="prec-desc">Quase sempre vence — use com muito cuidado 💩</span></div>
+      <div class="prec-item p2"><div class="prec-rank">2</div><span class="prec-label">Estilos Inline</span><span class="prec-desc"><code>style="..."</code> direto no elemento</span></div>
+      <div class="prec-item p3"><div class="prec-rank">3</div><span class="prec-label">Seletores de ID</span><span class="prec-desc"><code>#meu-id</code></span></div>
+      <div class="prec-item p4"><div class="prec-rank">4</div><span class="prec-label">Classes, Atributos e Pseudo-classes</span><span class="prec-desc"><code>.classe</code> · <code>[attr]</code> · <code>:hover</code></span></div>
+      <div class="prec-item p5"><div class="prec-rank">5</div><span class="prec-label">Tags e Pseudo-elementos</span><span class="prec-desc"><code>p</code> · <code>h1</code> · <code>::before</code></span></div>
+      <div class="prec-item p6"><div class="prec-rank">6</div><span class="prec-label">Ordem no código</span><span class="prec-desc">A última regra declarada vence em caso de empate</span></div>
+    </div>
+
+    <h3>Exemplo de Especificidade</h3>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>qual cor vence?</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* HTML */</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"paragrafo-id"</span>
+   <span class="attr">class</span>=<span class="str">"paragrafo-classe"</span><span class="tag">&gt;</span>
+  Qual cor sou eu?
+<span class="tag">&lt;/p&gt;</span>
+
+<span class="cmt">/* CSS */</span>
+<span class="sel">p</span> { <span class="prop">color</span>: <span class="val">green</span>; } <span class="cmt">/* mais fraco */</span>
+<span class="sel">.paragrafo-classe</span> { <span class="prop">color</span>: <span class="val">blue</span>; }
+<span class="sel">#paragrafo-id</span> { <span class="prop">color</span>: <span class="val">red</span>; } <span class="cmt">/* vence! */</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:10px;align-items:flex-start;">
+          <p style="color:red;font-family:Arial;font-size:14px;font-weight:bold;margin:0">→ O texto ficará vermelho</p>
+          <p style="font-family:Arial;font-size:12px;color:#666;margin:0">O ID tem maior especificidade e vence as regras de tipo e classe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><p>Quando a especificidade é a mesma (ex: duas classes), a regra que aparece <strong>por último no código CSS</strong> é a que vence e é aplicada.</p></div>
+    </div>
+
+    <h3>Exemplo Prático: Combinando Seletores</h3>
+    <div class="collapse-wrap">
+      <button class="collapse-toggle" onclick="toggleCollapse(this)">
+        📄 Ver código completo do exemplo
+        <span class="arrow">▶</span>
+      </button>
+      <div class="collapse-body">
+        <div class="code-block">
+          <div class="code-block-header"><span class="code-lang">css — estilos.css</span></div>
+          <pre><span class="cmt">/* Seletor de Tipo */</span>
+<span class="sel">p</span> {
+  <span class="prop">font-family</span>: <span class="val">sans-serif</span>;
+  <span class="prop">line-height</span>: <span class="val">1.5</span>;
+}
+
+<span class="cmt">/* Seletor de Classe */</span>
+<span class="sel">.destaque</span> {
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">color</span>: <span class="val">darkred</span>;
+}
+
+<span class="cmt">/* Seletor de ID */</span>
+<span class="sel">#cabecalho</span> {
+  <span class="prop">background-color</span>: <span class="val">#333</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+  <span class="prop">padding</span>: <span class="val">15px</span>;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       4. SELETORES AVANÇADOS
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="seletores-avancados">
+    <h1>Seletores Avançados</h1>
+    <p>Os seletores avançados permitem mirar nos elementos não apenas pelo nome, classe ou ID, mas também pelo <strong>relacionamento hierárquico</strong> ou pela <strong>combinação de suas propriedades</strong>.</p>
+
+    <h2>1. Seletor de Agrupamento</h2>
+    <p>Permite aplicar o <strong>mesmo conjunto de regras</strong> a vários seletores, evitando repetição de código (princípio DRY — <em>Don't Repeat Yourself</em>).</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>agrupamento com vírgula</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* Aplica à todos de uma vez */</span>
+<span class="sel">h1, h2, .aviso</span> {
+  <span class="prop">color</span>: <span class="val">red</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}</pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:8px;">
+          <h1 style="color:red;text-align:center;font-family:Arial;font-size:20px;margin:0">Título h1</h1>
+          <h2 style="color:red;text-align:center;font-family:Arial;font-size:16px;margin:0">Título h2</h2>
+          <p style="color:red;text-align:center;font-family:Arial;font-size:13px;margin:0">Parágrafo .aviso</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>2. Seletor Descendente</h2>
+    <p>Aplica estilo a um elemento que está <strong>dentro de outro</strong>, não importando a profundidade. Usa um <strong>espaço</strong> entre os seletores.</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>descendente — espaço entre seletores</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* Todos os &lt;a&gt; dentro de &lt;nav&gt; */</span>
+<span class="sel">nav a</span> {
+  <span class="prop">color</span>: <span class="val">green</span>;
+}
+
+<span class="tag">&lt;nav&gt;</span>
+  <span class="tag">&lt;p&gt;</span>
+    <span class="tag">&lt;a&gt;</span>Link da Nav<span class="tag">&lt;/a&gt;</span> <span class="cmt">✅ selecionado</span>
+  <span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;a&gt;</span>Link fora<span class="tag">&lt;/a&gt;</span> <span class="cmt">❌ não selecionado</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <div style="font-family:Arial;font-size:13px;">
+            <div style="border:1px dashed #ccc;padding:8px;border-radius:4px;margin-bottom:6px;">
+              <span style="font-size:10px;color:#999;display:block;margin-bottom:4px">&lt;nav&gt;</span>
+              <a style="color:green;font-weight:bold">Link da Nav ✅</a>
+            </div>
+            <a style="color:#333">Link fora ❌</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>3. Seletor Filho Direto</h2>
+    <p>Aplica estilo a um elemento <strong>apenas se ele for filho imediato</strong> do pai. Usa o sinal de maior que (<code>&gt;</code>).</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>filho direto — sinal &gt;</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* Apenas os &lt;li&gt; filhos diretos de &lt;ul&gt; */</span>
+<span class="sel">ul > li</span> {
+  <span class="prop">font-size</span>: <span class="val">20px</span>;
+}
+
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Item 1<span class="tag">&lt;/li&gt;</span>    <span class="cmt">✅ filho direto</span>
+  <span class="tag">&lt;li&gt;</span>
+    <span class="tag">&lt;ul&gt;</span>
+      <span class="tag">&lt;li&gt;</span>Subitem<span class="tag">&lt;/li&gt;</span> <span class="cmt">❌ neto</span>
+    <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+        <div class="demo-result" style="align-items:flex-start;">
+          <ul style="font-family:Arial;padding-left:20px;margin:0">
+            <li style="font-size:18px;color:#1a1a1a">Item 1 <span style="font-size:11px;color:green">(✅ grande)</span></li>
+            <li style="font-size:18px;color:#1a1a1a">Item 2 <span style="font-size:11px;color:green">(✅ grande)</span>
+              <ul style="padding-left:16px">
+                <li style="font-size:13px;color:#666">Subitem <span style="font-size:11px;color:#e74c3c">(❌ tamanho normal)</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. Seletor de Encadeamento</h2>
+    <p>Aplica estilo a um elemento que corresponde a <strong>todos os seletores ao mesmo tempo</strong>. Sem espaço entre os seletores.</p>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>encadeamento — sem espaço</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* Apenas &lt;p&gt; que tem AS DUAS classes */</span>
+<span class="sel">p.destaque.alerta</span> {
+  <span class="prop">border</span>: <span class="val">1px solid black</span>;
+  <span class="prop">background</span>: <span class="val">lightyellow</span>;
+}
+
+<span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"destaque alerta"</span><span class="tag">&gt;</span>
+  Selecionado ✅
+<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"destaque"</span><span class="tag">&gt;</span>
+  Não selecionado ❌
+<span class="tag">&lt;/p&gt;</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <p style="border:1px solid black;background:lightyellow;padding:6px 10px;font-family:Arial;font-size:13px;margin:0;border-radius:3px">Selecionado ✅</p>
+          <p style="font-family:Arial;font-size:13px;margin:0;color:#666">Não selecionado ❌</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>5. Combinando múltiplos seletores</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Combinação</th><th>Exemplo CSS</th><th>O que seleciona</th></tr></thead>
+        <tbody>
+          <tr><td>Agrupamento + Encadeamento</td><td><code>h2, p.aviso</code></td><td>Todos os <code>&lt;h2&gt;</code> e todos os <code>&lt;p&gt;</code> com classe <code>aviso</code></td></tr>
+          <tr><td>Descendente + Encadeamento</td><td><code>.card a:hover</code></td><td>Links em hover dentro de <code>.card</code></td></tr>
+          <tr><td>Descendente + Filho Direto</td><td><code>div > ul li</code></td><td>Todos os <code>&lt;li&gt;</code> dentro de um <code>&lt;ul&gt;</code> filho direto de <code>&lt;div&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       5. BOX MODEL
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="box-model">
+    <h1>📦 Box Model</h1>
+    <p>Todo elemento HTML é uma <strong>caixa</strong>. O Box Model define as camadas dessa caixa. Entender isso resolve a maioria dos problemas de espaçamento.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>as 4 camadas do box model</div>
+      <div class="boxmodel-viz">
+        <div style="background:#fde68a;padding:28px;border-radius:4px;position:relative;font-family:Arial;">
+          <span style="position:absolute;top:5px;left:10px;font-size:11px;font-weight:700;color:#92400e;">margin</span>
+          <div style="background:#6ee7b7;padding:22px;border-radius:2px;position:relative;">
+            <span style="position:absolute;top:5px;left:10px;font-size:11px;font-weight:700;color:#065f46;">border</span>
+            <div style="background:#bfdbfe;padding:20px;border-radius:2px;position:relative;">
+              <span style="position:absolute;top:5px;left:10px;font-size:11px;font-weight:700;color:#1e40af;">padding</span>
+              <div style="background:#ddd6fe;padding:14px 28px;border-radius:2px;text-align:center;">
+                <span style="color:#4c1d95;font-weight:700;font-size:13px;">content</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Propriedade</th><th>Exemplo</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td>margin</td><td><code>margin: 16px</code></td><td>Espaço externo — fora da borda</td></tr>
+          <tr><td>padding</td><td><code>padding: 12px</code></td><td>Espaço interno — entre borda e conteúdo</td></tr>
+          <tr><td>border</td><td><code>border: 2px solid red</code></td><td>Borda visível ao redor do elemento</td></tr>
+          <tr><td>width / height</td><td><code>width: 200px</code></td><td>Dimensões da área de conteúdo</td></tr>
+          <tr><td>box-sizing</td><td><code>box-sizing: border-box</code></td><td>Inclui padding e border no tamanho total</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>margin vs padding na prática</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.card-a</span> {
+  <span class="prop">border</span>: <span class="val">2px solid #4f46e5</span>;
+  <span class="prop">padding</span>: <span class="val">24px</span>; <span class="cmt">/* interno */</span>
+  <span class="prop">margin</span>: <span class="val">20px</span>;  <span class="cmt">/* externo */</span>
+  <span class="prop">background</span>: <span class="val">#e0e7ff</span>;
+}
+
+<span class="sel">.card-b</span> {
+  <span class="prop">border</span>: <span class="val">2px solid #059669</span>;
+  <span class="prop">padding</span>: <span class="val">6px</span>;
+  <span class="prop">margin</span>: <span class="val">4px</span>;
+  <span class="prop">background</span>: <span class="val">#d1fae5</span>;
+}</pre></div>
+        <div class="demo-result" style="flex-wrap:wrap;gap:0;align-items:center;justify-content:center;">
+          <div style="border:2px solid #4f46e5;padding:24px;margin:14px;background:#e0e7ff;font-family:Arial;font-size:12px;color:#3730a3;text-align:center;border-radius:3px;">padding grande<br>margin grande</div>
+          <div style="border:2px solid #059669;padding:6px;margin:4px;background:#d1fae5;font-family:Arial;font-size:12px;color:#065f46;text-align:center;border-radius:3px;">padding pequeno<br>margin pequeno</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       6. DISPLAY
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="display">
+    <h1>💻 O Segredo do Layout: A Propriedade <code>display</code></h1>
+    <p>Se o HTML define os elementos da sua página, o <strong><code>display</code></strong> é a propriedade CSS que define como esses elementos <strong>se comportam e interagem com o espaço</strong> ao redor deles.</p>
+    <p>Pense no <code>display</code> como as regras de etiqueta de um elemento: ele decide se o elemento quer sentar sozinho na mesa ou se pode compartilhar o espaço com os vizinhos.</p>
+
+    <h2>1. <code>display: block</code> 🧱</h2>
+    <p>O elemento <strong>"dominador"</strong> da linha. Sempre ocupa <strong>100% da largura</strong> disponível e força o elemento seguinte a quebrar a linha. Tags como <code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code> e <code>&lt;div&gt;</code> são <code>block</code> por padrão. Permite definir <code>width</code> e <code>height</code> livremente.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>display: block — cada elemento ocupa a linha inteira</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.bloco</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">background</span>: <span class="val">#e74c3c</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">40px</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">8px</span>;
+}</pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:0;padding:1.2rem;">
+          <div style="display:block;background:#e74c3c;color:white;width:200px;height:40px;margin-bottom:8px;font-family:Arial;font-size:12px;display:flex;align-items:center;justify-content:center;border-radius:3px;">Caixa Bloco 1</div>
+          <div style="display:block;background:#e74c3c;color:white;width:200px;height:40px;margin-bottom:8px;font-family:Arial;font-size:12px;display:flex;align-items:center;justify-content:center;border-radius:3px;">Caixa Bloco 2</div>
+          <div style="display:block;background:#e74c3c;color:white;width:200px;height:40px;font-family:Arial;font-size:12px;display:flex;align-items:center;justify-content:center;border-radius:3px;">Caixa Bloco 3</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>2. <code>display: inline</code> 🏃</h2>
+    <p>O elemento <strong>"social"</strong>. Ocupa apenas o espaço necessário para o conteúdo e se enfileira ao lado dos outros. Tags como <code>&lt;span&gt;</code>, <code>&lt;a&gt;</code> e <code>&lt;strong&gt;</code> são <code>inline</code> por padrão. <strong>Não aceita</strong> <code>width</code> nem <code>height</code> — o tamanho é determinado só pelo conteúdo.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>display: inline — elementos ficam lado a lado</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.inline</span> {
+  <span class="prop">display</span>: <span class="val">inline</span>;
+  <span class="prop">background</span>: <span class="val">#3498db</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">4px 8px</span>;
+
+  <span class="cmt">/* Estas são ignoradas! */</span>
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">50px</span>;
+}</pre></div>
+        <div class="demo-result">
+          <div style="font-family:Arial;font-size:13px;line-height:2.2;">
+            <span style="display:inline;background:#3498db;color:white;padding:4px 8px;border-radius:3px;margin-right:4px">Inline A</span>
+            <span style="display:inline;background:#3498db;color:white;padding:4px 8px;border-radius:3px;margin-right:4px">Inline B maior</span>
+            <span style="display:inline;background:#3498db;color:white;padding:4px 8px;border-radius:3px">Inline C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>3. <code>display: inline-block</code> 👑</h2>
+    <p>O <strong>melhor dos dois mundos</strong>. Fica lado a lado com outros elementos (como <code>inline</code>), mas ainda permite definir <code>width</code> e <code>height</code> (como <code>block</code>). Perfeito para menus e galerias.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>display: inline-block — lado a lado com medidas definidas</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.inline-block</span> {
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+  <span class="prop">background</span>: <span class="val">#2ecc71</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">width</span>: <span class="val">120px</span>;  <span class="cmt">✅ funciona!</span>
+  <span class="prop">height</span>: <span class="val">70px</span>;  <span class="cmt">✅ funciona!</span>
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+  <span class="prop">line-height</span>: <span class="val">70px</span>;
+}</pre></div>
+        <div class="demo-result" style="gap:6px;flex-wrap:wrap;">
+          <div style="display:inline-block;background:#2ecc71;color:white;width:100px;height:70px;text-align:center;line-height:70px;font-family:Arial;font-size:12px;border-radius:3px;margin:3px">Bloco I</div>
+          <div style="display:inline-block;background:#2ecc71;color:white;width:100px;height:70px;text-align:center;line-height:70px;font-family:Arial;font-size:12px;border-radius:3px;margin:3px">Bloco II</div>
+          <div style="display:inline-block;background:#2ecc71;color:white;width:100px;height:70px;text-align:center;line-height:70px;font-family:Arial;font-size:12px;border-radius:3px;margin:3px">Bloco III</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. <code>display: none</code> 👻</h2>
+    <p>O elemento <strong>desaparece completamente</strong> da tela e do fluxo do documento — não ocupa espaço, como se nunca tivesse existido. Diferente de <code>visibility: hidden</code>, que esconde mas mantém o espaço.</p>
+
+    <div class="callout amber">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><p><code>display: none</code> remove o elemento visualmente e do fluxo. <code>visibility: hidden</code> apenas o torna invisível, mas o espaço permanece ocupado.</p></div>
+    </div>
+
+    <h3>Tabela Resumo</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Valor</th><th>Comportamento</th><th>Lado a lado?</th><th>width/height?</th></tr></thead>
+        <tbody>
+          <tr><td>block</td><td>Como um parágrafo — ocupa a linha toda</td><td>Não</td><td>Sim</td></tr>
+          <tr><td>inline</td><td>Como um link — só ocupa o conteúdo</td><td>Sim</td><td>Não</td></tr>
+          <tr><td>inline-block</td><td>Como um link, mas com medidas</td><td>Sim</td><td>Sim</td></tr>
+          <tr><td>none</td><td>Desaparece completamente</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="collapse-wrap">
+      <button class="collapse-toggle" onclick="toggleCollapse(this)">
+        📄 Ver código completo do exemplo
+        <span class="arrow">▶</span>
+      </button>
+      <div class="collapse-body">
+        <div class="code-block">
+          <div class="code-block-header"><span class="code-lang">html + css</span></div>
+          <pre><span class="tag">&lt;style&gt;</span>
+  <span class="sel">.bloco</span> {
+    <span class="prop">display</span>: <span class="val">block</span>;
+    <span class="prop">background</span>: <span class="val">#e74c3c</span>;
+    <span class="prop">color</span>: <span class="val">white</span>;
+    <span class="prop">width</span>: <span class="val">250px</span>;
+    <span class="prop">height</span>: <span class="val">50px</span>;
+    <span class="prop">margin</span>: <span class="val">10px</span>;
+    <span class="prop">padding</span>: <span class="val">10px</span>;
+  }
+  <span class="sel">.inline</span> {
+    <span class="prop">display</span>: <span class="val">inline</span>;
+    <span class="prop">background</span>: <span class="val">#3498db</span>;
+    <span class="prop">color</span>: <span class="val">white</span>;
+    <span class="prop">padding</span>: <span class="val">5px</span>;
+  }
+  <span class="sel">.inline-block</span> {
+    <span class="prop">display</span>: <span class="val">inline-block</span>;
+    <span class="prop">background</span>: <span class="val">#2ecc71</span>;
+    <span class="prop">color</span>: <span class="val">white</span>;
+    <span class="prop">width</span>: <span class="val">150px</span>;
+    <span class="prop">height</span>: <span class="val">80px</span>;
+    <span class="prop">line-height</span>: <span class="val">80px</span>;
+    <span class="prop">text-align</span>: <span class="val">center</span>;
+  }
+<span class="tag">&lt;/style&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       7. POSICIONAMENTO
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="posicionamento">
+    <h1>Posicionamento CSS</h1>
+    <p>O <strong>Posicionamento CSS</strong> controla como um elemento se comporta e onde ele é colocado na tela em relação ao fluxo normal do HTML, a outros elementos, ou à janela do navegador.</p>
+    <p>O segredo está em dominar os quatro valores principais da propriedade <code>position</code>: <code>static</code>, <code>relative</code>, <code>absolute</code> e <code>fixed</code>.</p>
+
+    <h2>1. <code>position: static</code> — Padrão</h2>
+    <p>É o comportamento padrão de todo elemento HTML. O elemento flui naturalmente de acordo com a ordem do HTML. As propriedades <code>top</code>, <code>left</code>, <code>right</code> e <code>bottom</code> <strong>não têm efeito</strong> aqui.</p>
+
+    <h2>2. <code>position: relative</code></h2>
+    <p>Permite mover o elemento <strong>a partir de sua posição original</strong>. O espaço que ele ocupava é <strong>mantido</strong> no fluxo, mesmo que o elemento seja deslocado. Muito usado para servir de referência para elementos filhos com <code>position: absolute</code>.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>position: relative — deslocado da posição original</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.caixa-b</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>;
+  <span class="prop">top</span>: <span class="val">20px</span>;
+  <span class="prop">left</span>: <span class="val">30px</span>;
+}
+
+<span class="cmt">/* O espaço original ainda existe
+   no fluxo do documento */</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:flex-start;gap:0;padding:1rem;font-family:Arial;font-size:12px;">
+          <div style="background:#bfdbfe;padding:8px 14px;border-radius:3px;margin-bottom:4px;width:100px;text-align:center;color:#1e40af;font-weight:600;">Caixa A</div>
+          <div style="position:relative;top:16px;left:24px;background:#fde68a;padding:8px 14px;border-radius:3px;width:120px;text-align:center;color:#92400e;font-weight:600;border:2px dashed #f59e0b;">Caixa B</div>
+          <div style="background:#bfdbfe;padding:8px 14px;border-radius:3px;margin-top:24px;width:100px;text-align:center;color:#1e40af;font-weight:600;">Caixa C</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>3. <code>position: absolute</code></h2>
+    <p>Retira o elemento do fluxo normal. Ele se posiciona em relação ao <strong>ancestral posicionado mais próximo</strong> (com qualquer <code>position</code> diferente de <code>static</code>). Se não houver ancestral posicionado, se posiciona em relação ao <code>&lt;body&gt;</code>.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>position: absolute — dentro de um container relative</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.container</span> {
+  <span class="prop">position</span>: <span class="val">relative</span>; <span class="cmt">← referência</span>
+  <span class="prop">width</span>: <span class="val">200px</span>;
+  <span class="prop">height</span>: <span class="val">120px</span>;
+  <span class="prop">background</span>: <span class="val">#f0f0f0</span>;
+}
+
+<span class="sel">.selo</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="val">8px</span>;
+  <span class="prop">right</span>: <span class="val">8px</span>;
+  <span class="prop">background</span>: <span class="val">red</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">4px 8px</span>;
+  <span class="prop">border-radius</span>: <span class="val">4px</span>;
+}</pre></div>
+        <div class="demo-result">
+          <div style="position:relative;width:180px;height:110px;background:#f0f0f0;border-radius:6px;border:1px dashed #ccc;font-family:Arial;">
+            <span style="position:absolute;top:8px;right:8px;background:red;color:white;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;">NOVO</span>
+            <div style="padding:12px;font-size:12px;color:#555;margin-top:8px">Card de produto<br><span style="color:#2ecc71;font-weight:700">R$ 99,90</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Z-Index e Contexto de Empilhamento</h3>
+    <p>Ao usar <code>absolute</code> ou <code>fixed</code>, o elemento entra em uma nova camada. A propriedade <code>z-index</code> controla a ordem de empilhamento — maior valor = mais na frente. Só funciona em elementos com <code>position</code> diferente de <code>static</code>.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>z-index — quem fica na frente?</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.azul</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">z-index</span>: <span class="val">1</span>;
+}
+<span class="sel">.vermelho</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">z-index</span>: <span class="val">2</span>; <span class="cmt">← fica na frente</span>
+}</pre></div>
+        <div class="demo-result" style="min-height:120px;">
+          <div style="position:relative;width:160px;height:90px;">
+            <div style="position:absolute;top:0;left:0;width:100px;height:70px;background:#3498db;border-radius:6px;z-index:1;display:flex;align-items:center;justify-content:center;color:white;font-family:Arial;font-size:11px;font-weight:700;">z-index: 1</div>
+            <div style="position:absolute;top:20px;left:40px;width:100px;height:70px;background:#e74c3c;border-radius:6px;z-index:2;display:flex;align-items:center;justify-content:center;color:white;font-family:Arial;font-size:11px;font-weight:700;">z-index: 2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. <code>position: fixed</code></h2>
+    <p>O mais extremo dos posicionamentos. O elemento é posicionado em relação à <strong>janela do navegador (viewport)</strong> e <strong>permanece no mesmo lugar ao rolar a página</strong>. Perfeito para barras de navegação fixas e botões "Voltar ao topo".</p>
+
+    <div class="callout blue">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><p>As propriedades de offset <code>top</code>, <code>left</code>, <code>right</code> e <code>bottom</code> só têm efeito em elementos com <code>position</code> diferente de <code>static</code>. As margens (<code>margin</code>) são aplicadas separadamente e não interferem no posicionamento.</p></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       8. FLOAT
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="float">
+    <h1>🖼️ CSS Float</h1>
+    <p>A propriedade <code>float</code> foi uma das primeiras ferramentas poderosas para organizar layout. Sua principal função é replicar o <strong>efeito de jornal ou revista</strong>, onde o texto flui elegantemente ao redor de uma imagem.</p>
+    <p>O <code>float</code> <strong>retira o elemento do fluxo normal</strong> do HTML, permitindo que o conteúdo vizinho suba e ocupe o espaço ao lado dele.</p>
+
+    <h2>O Problema Padrão</h2>
+    <p>Sem float, uma imagem e um parágrafo sempre ficam empilhados — o parágrafo começa em uma nova linha abaixo da imagem, mesmo que haja espaço ao lado.</p>
+
+    <h2>Usando <code>float: left</code> e <code>float: right</code></h2>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>float: left — texto envolve a imagem pela direita</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">img</span> {
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">margin-right</span>: <span class="val">12px</span>;
+  <span class="prop">width</span>: <span class="val">80px</span>;
+}
+
+<span class="cmt">/* O parágrafo seguinte
+   envolve a imagem pela direita */</span></pre></div>
+        <div class="demo-result float-demo-area" style="display:block;min-height:130px;padding:1rem;">
+          <div style="float:left;width:70px;height:70px;background:#bfdbfe;border-radius:4px;margin-right:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1e40af;font-family:Arial;font-weight:700">IMG</div>
+          <p style="font-family:Arial;font-size:12px;color:#444;line-height:1.6;margin:0">Este é o texto do parágrafo que flui ao redor da imagem graças ao float: left. O efeito é similar a revistas e jornais. O texto continua ao lado enquanto houver espaço disponível.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>float: right — imagem vai para a direita</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">img</span> {
+  <span class="prop">float</span>: <span class="val">right</span>;
+  <span class="prop">margin-left</span>: <span class="val">12px</span>;
+  <span class="prop">width</span>: <span class="val">80px</span>;
+}</pre></div>
+        <div class="demo-result" style="display:block;background:white;min-height:130px;padding:1rem;align-items:flex-start;">
+          <div style="float:right;width:70px;height:70px;background:#fde68a;border-radius:4px;margin-left:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#92400e;font-family:Arial;font-weight:700">IMG</div>
+          <p style="font-family:Arial;font-size:12px;color:#444;line-height:1.6;margin:0">Com float: right, a imagem vai para a direita e o texto envolve pelo lado esquerdo. Útil para logotipos e blocos laterais de informação.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>A Propriedade <code>clear</code> 🧹</h2>
+    <p>O <code>float</code> afeta todos os elementos que vêm depois dele. Quando você não quer que um elemento fique ao lado do item flutuante, usa a propriedade <code>clear</code>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Valor</th><th>Comportamento</th></tr></thead>
+        <tbody>
+          <tr><td>clear: left</td><td>Não flutua ao lado de itens com <code>float: left</code></td></tr>
+          <tr><td>clear: right</td><td>Não flutua ao lado de itens com <code>float: right</code></td></tr>
+          <tr><td>clear: both</td><td>Não flutua ao lado de itens em nenhum lado — o mais comum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>clear: both — rodapé sempre abaixo dos elementos flutuantes</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">img</span> {
+  <span class="prop">float</span>: <span class="val">left</span>;
+}
+
+<span class="sel">footer</span> {
+  <span class="prop">clear</span>: <span class="val">both</span>; <span class="cmt">← abaixo de tudo</span>
+  <span class="prop">background</span>: <span class="val">#333</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">10px</span>;
+}</pre></div>
+        <div class="demo-result" style="display:block;background:white;padding:1rem;align-items:flex-start;min-height:140px;">
+          <div style="float:left;width:60px;height:60px;background:#bfdbfe;border-radius:4px;margin-right:10px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#1e40af;font-family:Arial;font-weight:700">IMG</div>
+          <p style="font-family:Arial;font-size:12px;color:#444;line-height:1.5;margin:0 0 8px 0">Texto ao redor...</p>
+          <div style="clear:both;background:#333;color:white;padding:8px 12px;font-family:Arial;font-size:12px;border-radius:3px;font-weight:600">Footer — sempre abaixo (clear: both)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       9. FLEXBOX
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="flexbox">
+    <h1>🚀 Flexbox: Layouts Flexíveis e Responsivos</h1>
+    <p>O CSS Flexbox é uma técnica projetada para dispor, alinhar e distribuir o espaço entre elementos em um contêiner. Ele trabalha em <strong>uma dimensão por vez</strong>: ou em uma linha, ou em uma coluna.</p>
+
+    <div class="callout blue">
+      <span class="callout-icon">📐</span>
+      <div class="callout-body"><p><strong>A Regra de Ouro:</strong> as propriedades do Flexbox se dividem entre as que vão no elemento <strong>pai (contêiner)</strong> e as que vão nos elementos <strong>filhos (itens)</strong>.</p></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Quem</th><th>Propriedades comuns</th><th>O que controla</th></tr></thead>
+        <tbody>
+          <tr><td>Contêiner (pai)</td><td><code>flex-direction</code>, <code>justify-content</code>, <code>align-items</code>, <code>flex-wrap</code></td><td>O layout geral de todos os filhos</td></tr>
+          <tr><td>Item (filho)</td><td><code>order</code>, <code>flex</code>, <code>align-self</code></td><td>O comportamento de cada item individual</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Propriedades do Contêiner (Pai)</h2>
+
+    <h3>A. <code>flex-wrap</code> — Gerenciando linhas</h3>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>nowrap vs wrap</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* nowrap (padrão): tudo em 1 linha */</span>
+<span class="sel">.container</span> { <span class="prop">flex-wrap</span>: <span class="val">nowrap</span>; }
+
+<span class="cmt">/* wrap: quebra de linha automática */</span>
+<span class="sel">.container</span> { <span class="prop">flex-wrap</span>: <span class="val">wrap</span>; }</pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:12px;align-items:stretch;padding:1rem;background:white;">
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">nowrap — itens espremidos</p>
+            <div style="display:flex;flex-wrap:nowrap;gap:4px;background:#f4f4f9;padding:6px;border-radius:4px;overflow:hidden;">
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px;white-space:nowrap;flex-shrink:0">Item 1</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px;white-space:nowrap;flex-shrink:0">Item 2</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px;white-space:nowrap;flex-shrink:0">Item 3</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px;white-space:nowrap;flex-shrink:0">Item 4</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">wrap — quebra de linha</p>
+            <div style="display:flex;flex-wrap:wrap;gap:4px;background:#f4f4f9;padding:6px;border-radius:4px;max-width:180px;">
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px">Item 1</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px">Item 2</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px">Item 3</div>
+              <div style="background:#7c3aed;color:white;padding:5px 10px;border-radius:3px;font-family:Arial;font-size:11px">Item 4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>B. <code>justify-content</code> — Eixo principal</h3>
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>justify-content — distribuição horizontal</div>
+      <div class="demo-result" style="flex-direction:column;gap:12px;align-items:stretch;padding:1rem;background:white;min-height:auto;">
+        <div id="jc-demo" style="display:flex;justify-content:flex-start;gap:8px;background:#f4f4f9;padding:8px;border-radius:4px;transition:all 0.3s;">
+          <div style="background:#7c3aed;color:white;padding:6px 14px;border-radius:3px;font-family:Arial;font-size:12px">A</div>
+          <div style="background:#7c3aed;color:white;padding:6px 14px;border-radius:3px;font-family:Arial;font-size:12px">B</div>
+          <div style="background:#7c3aed;color:white;padding:6px 14px;border-radius:3px;font-family:Arial;font-size:12px">C</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button onclick="setJC('flex-start')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">flex-start</button>
+          <button onclick="setJC('flex-end')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">flex-end</button>
+          <button onclick="setJC('center')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">center</button>
+          <button onclick="setJC('space-between')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">space-between</button>
+          <button onclick="setJC('space-around')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">space-around</button>
+          <button onclick="setJC('space-evenly')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">space-evenly</button>
+        </div>
+        <p id="jc-label" style="font-family:monospace;font-size:12px;color:#6b46c1;margin:0">justify-content: flex-start</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Valor</th><th>Comportamento</th></tr></thead>
+        <tbody>
+          <tr><td>flex-start</td><td>Agrupa os itens no início do eixo</td></tr>
+          <tr><td>flex-end</td><td>Agrupa os itens no fim do eixo</td></tr>
+          <tr><td>center</td><td>Centraliza os itens no meio</td></tr>
+          <tr><td>space-between</td><td>Espaço uniforme entre os itens — bordas nas extremidades</td></tr>
+          <tr><td>space-around</td><td>Espaço ao redor de cada item — bordas com metade do espaço</td></tr>
+          <tr><td>space-evenly</td><td>Espaço totalmente uniforme, inclusive nas bordas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>C. <code>align-items</code> — Eixo cruzado</h3>
+    <p>Controla o alinhamento no eixo perpendicular. Para ver o efeito, o contêiner pai <strong>deve ter altura definida</strong>.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>align-items — alinhamento vertical</div>
+      <div class="demo-result" style="flex-direction:column;gap:12px;align-items:stretch;padding:1rem;background:white;min-height:auto;">
+        <div id="ai-demo" style="display:flex;align-items:flex-start;gap:8px;background:#f4f4f9;padding:8px;border-radius:4px;height:80px;transition:all 0.3s;">
+          <div style="background:#059669;color:white;padding:6px 14px;border-radius:3px;font-family:Arial;font-size:12px">A</div>
+          <div style="background:#059669;color:white;padding:10px 14px;border-radius:3px;font-family:Arial;font-size:12px">B alto</div>
+          <div style="background:#059669;color:white;padding:6px 14px;border-radius:3px;font-family:Arial;font-size:12px">C</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button onclick="setAI('flex-start')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">flex-start</button>
+          <button onclick="setAI('flex-end')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">flex-end</button>
+          <button onclick="setAI('center')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">center</button>
+          <button onclick="setAI('stretch')" style="font-family:monospace;font-size:11px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;cursor:pointer;background:white">stretch</button>
+        </div>
+        <p id="ai-label" style="font-family:monospace;font-size:12px;color:#059669;margin:0">align-items: flex-start</p>
+      </div>
+    </div>
+
+    <h2>Propriedades do Item (Filho)</h2>
+
+    <h3>A. <code>order</code> — Mudando a ordem</h3>
+    <p>Reorganiza os itens visualmente <strong>sem alterar o HTML</strong>. Todos têm <code>order: 0</code> por padrão. Menor valor = aparece primeiro.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>order — reorganizando sem mudar o html</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.item-a</span> { <span class="prop">order</span>: <span class="val">2</span>; }
+<span class="sel">.item-b</span> { <span class="prop">order</span>: <span class="val">-1</span>; } <span class="cmt">← aparece 1º!</span>
+<span class="sel">.item-c</span> { <span class="prop">order</span>: <span class="val">1</span>; }
+
+<span class="cmt">/* Ordem no HTML: A, B, C
+   Ordem visual:  B, A, C */</span></pre></div>
+        <div class="demo-result">
+          <div style="display:flex;gap:6px;font-family:Arial;font-size:12px;">
+            <div style="background:#e74c3c;color:white;padding:8px 12px;border-radius:3px;order:2;font-weight:700">A<br><span style="font-size:10px;opacity:0.8">order:2</span></div>
+            <div style="background:#2ecc71;color:white;padding:8px 12px;border-radius:3px;order:-1;font-weight:700">B<br><span style="font-size:10px;opacity:0.8">order:-1</span></div>
+            <div style="background:#3498db;color:white;padding:8px 12px;border-radius:3px;order:1;font-weight:700">C<br><span style="font-size:10px;opacity:0.8">order:1</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>B. <code>align-self</code> — Alinhamento individual</h3>
+    <p>Sobrescreve o <code>align-items</code> do contêiner para <strong>um item específico</strong>.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>align-self — apenas um item diferente</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.container</span> {
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+}
+
+<span class="sel">.item-especial</span> {
+  <span class="prop">align-self</span>: <span class="val">flex-start</span>;
+  <span class="cmt">/* Esse vai pro topo,
+     os outros ficam centralizados */</span>
+}</pre></div>
+        <div class="demo-result" style="background:white;min-height:110px;">
+          <div style="display:flex;align-items:center;gap:8px;height:90px;background:#f4f4f9;padding:8px;border-radius:4px;width:100%">
+            <div style="background:#7c3aed;color:white;padding:8px 12px;border-radius:3px;font-family:Arial;font-size:11px;align-self:flex-start;font-weight:700">Especial<br><span style="opacity:0.8;font-size:9px">flex-start</span></div>
+            <div style="background:#a78bfa;color:white;padding:8px 12px;border-radius:3px;font-family:Arial;font-size:11px;font-weight:700">Normal</div>
+            <div style="background:#a78bfa;color:white;padding:8px 12px;border-radius:3px;font-family:Arial;font-size:11px;font-weight:700">Normal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <span class="callout-icon">🎮</span>
+      <div class="callout-body"><p>Sites como <strong>Flexbox Froggy</strong> são altamente recomendados para praticar. Com tantas propriedades, o caminho mais eficaz é a prática contínua com recursos visuais interativos.</p></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       10. RESPONSIVIDADE
+  ═══════════════════════════════════════════ -->
+  <section class="section" id="responsividade">
+    <h1>📱 Métodos para Criar Sites Responsivos</h1>
+    <p>Um site <strong>responsivo</strong> é aquele que fica ótimo e funciona bem em computadores, tablets e celulares. O CSS oferece quatro ferramentas principais para isso.</p>
+
+    <h2>1. Media Queries 📏</h2>
+    <p>Pense nas Media Queries como "regras condicionais". Elas permitem aplicar estilos <strong>apenas se</strong> uma condição for atendida — geralmente relacionada ao tamanho da tela.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>media query — estilo condicional</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">/* Estilos padrão (desktop) */</span>
+<span class="sel">.cabecalho</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;
+}
+
+<span class="cmt">/* Quando a tela tiver 600px ou menos */</span>
+<span class="kw">@media</span> (<span class="prop">max-width</span>: <span class="val">600px</span>) {
+  <span class="sel">.cabecalho</span> {
+    <span class="prop">flex-direction</span>: <span class="val">column</span>;
+  }
+}</pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:16px;background:white;padding:1rem;align-items:stretch;">
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:6px">Desktop (row)</p>
+            <div style="display:flex;flex-direction:row;gap:6px;">
+              <div style="background:#333;color:white;padding:6px 12px;font-family:Arial;font-size:11px;border-radius:3px">Logo</div>
+              <div style="background:#eee;padding:6px 12px;font-family:Arial;font-size:11px;border-radius:3px;flex:1;text-align:right">Nav links</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:6px">Mobile — max-width: 600px (column)</p>
+            <div style="display:flex;flex-direction:column;gap:4px;max-width:160px;">
+              <div style="background:#333;color:white;padding:6px 12px;font-family:Arial;font-size:11px;border-radius:3px;text-align:center">Logo</div>
+              <div style="background:#eee;padding:6px 12px;font-family:Arial;font-size:11px;border-radius:3px;text-align:center">Nav links</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>2. CSS Flexbox ➡️</h2>
+    <p>O Flexbox é o "organizador de filas" do CSS. Sistema <strong>unidimensional</strong>, excelente para alinhar itens em uma única linha ou coluna. A propriedade <code>flex: 1</code> nos filhos faz com que dividam o espaço igualmente e se ajustem automaticamente.</p>
+
+    <h2>3. CSS Grid 🖼️</h2>
+    <p>O CSS Grid é o "arquiteto" do CSS. Sistema <strong>bidimensional</strong>, ideal para layouts complexos com linhas e colunas simultâneas. A unidade <code>fr</code> (fração) é excelente para responsividade.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>css grid — layout em grade</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="sel">.container</span> {
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr 1fr</span>;
+  <span class="prop">gap</span>: <span class="val">16px</span>;
+}
+
+<span class="cmt">/* 1fr = 1 fração do espaço
+   disponível. As 2 colunas
+   dividem o espaço igualmente. */</span></pre></div>
+        <div class="demo-result" style="background:white;padding:1rem;align-items:stretch;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;">
+            <div style="background:#e0e7ff;border-radius:4px;padding:12px;font-family:Arial;font-size:11px;color:#3730a3;text-align:center">Coluna 1<br><span style="font-size:10px;opacity:0.7">1fr</span></div>
+            <div style="background:#e0e7ff;border-radius:4px;padding:12px;font-family:Arial;font-size:11px;color:#3730a3;text-align:center">Coluna 2<br><span style="font-size:10px;opacity:0.7">1fr</span></div>
+            <div style="background:#ddd6fe;border-radius:4px;padding:12px;font-family:Arial;font-size:11px;color:#4c1d95;text-align:center;grid-column:1/-1">Linha que ocupa tudo (grid-column: 1 / -1)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. Frameworks Externos (Bootstrap) 📦</h2>
+    <p>Frameworks são "kits de construção prontos". O <strong>Bootstrap</strong> é o mais famoso — fornece classes CSS pré-escritas e componentes prontos (botões, navbar, carrosséis). Usa um sistema de grade de <strong>12 colunas</strong> baseado em Flexbox.</p>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">html — bootstrap grid</span></div>
+      <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="cmt">&lt;!-- ocupa 6 de 12 colunas = metade --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-6"</span><span class="tag">&gt;</span>Primeiro Item<span class="tag">&lt;/div&gt;</span>
+  <span class="cmt">&lt;!-- ocupa 4 de 12 colunas = um terço --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-4"</span><span class="tag">&gt;</span>Segundo Item<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+    </div>
+
+    <h2>Escolhendo a Ferramenta Certa</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ferramenta</th><th>Quando usar</th></tr></thead>
+        <tbody>
+          <tr><td>Grid</td><td>Layout principal da página — organização macro (cabeçalho, sidebar, conteúdo, rodapé)</td></tr>
+          <tr><td>Flexbox</td><td>Alinhamento dentro das seções — organização micro (menus, cards, formulários)</td></tr>
+          <tr><td>Media Queries</td><td>Ajustes pontuais quando o layout falha em telas muito pequenas ou grandes</td></tr>
+          <tr><td>Bootstrap</td><td>Prototipagem rápida e componentes prontos sem escrever CSS do zero</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout blue">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><p>Não existe uma ferramenta "melhor". Como desenvolvedor, você vai <strong>combinar todas elas</strong> dependendo do que o projeto precisa. Grid para a estrutura, Flexbox para os detalhes, Media Queries para os ajustes.</p></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function toggleCollapse(btn) {
+    const body = btn.nextElementSibling;
+    btn.classList.toggle('open');
+    body.classList.toggle('open');
+    btn.querySelector('.arrow').textContent = btn.classList.contains('open') ? '▶' : '▶';
+  }
+
+  function setJC(val) {
+    document.getElementById('jc-demo').style.justifyContent = val;
+    document.getElementById('jc-label').textContent = 'justify-content: ' + val;
+  }
+
+  function setAI(val) {
+    const demo = document.getElementById('ai-demo');
+    demo.style.alignItems = val;
+    document.getElementById('ai-label').textContent = 'align-items: ' + val;
+  }
+
+  const sections = ['intro','seletores','cascata','seletores-avancados','box-model','display','posicionamento','float','flexbox','responsividade'];
+  const navLinks = document.querySelectorAll('#nav a');
+
+  function updateNav() {
+    let current = sections[0];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 60) current = id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+</script>
+</body>
+</html>
