@@ -8,7 +8,7 @@ body {
 }
 .main {
   flex: 1;
-  display: inline-block;
+  
 }
 
 h1 {
@@ -20,7 +20,12 @@ footer {
   color: midnightblue;
 }
 
-img{
+.tile-image1{
+  height: 10%;
+  width: 20%;
+  float: left;
+}
+.tile-image2{
   height: 10%;
   width: 20%;
   float: left;
@@ -28,4 +33,40 @@ img{
 
 
 
+.left-card{ /* CONTROLA A DIV DA ESQUERDA*/
+  height: 20%;
+  width: 40%;
+  display: inline-block;
+  
+  
+}
+.right-card{ /* CONTROLA A DIV DA DIREITA*/
+  height: 20%;
+  width: 40%;
+  display: inline-block;
+  
+}
+.card-text1{ /* CONTROLA O TEXTO DA DIREITA*/
+  height: 20%;
+  width: 40%;
+  padding-left: 22%;
+  
+  
+}
+.card-text2{ /* CONTROLA O TEXTO DA ESQUERDA*/
+  height: 20%;
+  width: 40%;
+  padding-left: 22%;
+}
+
+.card-title1{ /* CONTROLA O TITULO DA ESQUERDA*/
+  margin-top: 0;
+
+}
+.card-title2{ /* CONTROLA O TITULO DA DIREITA*/
+  margin-top: 0;
+}
+.title-externo{ /* CONTROLA O TITULO DA PRINCIPAL*/
+  
+}
 
