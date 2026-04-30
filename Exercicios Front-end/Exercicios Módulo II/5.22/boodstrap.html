@@ -1,0 +1,732 @@
+Referencia-Bootstrap.html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootstrap</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f7f7f5;
+    --bg3: #efeeeb;
+    --border: #e3e2df;
+    --border2: #d3d2ce;
+    --text: #1a1a1a;
+    --text2: #5a5a5a;
+    --text3: #8a8a8a;
+    --accent: #2f80ed;
+    --accent-bg: #eef4fd;
+    --green: #0f7b3d;
+    --green-bg: #edf7f2;
+    --amber: #7a4f00;
+    --amber-bg: #fdf6e3;
+    --red: #c0392b;
+    --purple: #6b46c1;
+    --purple-bg: #f5f0ff;
+    --bs: #7952b3;
+    --bs-bg: #f3eeff;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+  .page { max-width: 780px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.96); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .sticky-nav a {
+    white-space: nowrap; font-size: 13px; font-weight: 500; color: var(--text3);
+    text-decoration: none; padding: 0 14px; height: 48px; display: flex; align-items: center;
+    border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s;
+  }
+  .sticky-nav a:hover { color: var(--text); }
+  .sticky-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .module-tag { display: inline-block; font-size: 12px; font-weight: 600; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem; }
+  .page-title { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.8rem; }
+  .page-intro { font-size: 1rem; color: var(--text2); line-height: 1.75; }
+
+  .toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.5rem; margin-bottom: 3rem; }
+  .toc-title { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.8rem; }
+  .toc ol { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px; }
+  .toc li { font-size: 0.9rem; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  .section { margin-bottom: 4rem; scroll-margin-top: 60px; }
+  .section-divider { height: 1px; background: var(--border); margin: 4rem 0; }
+
+  h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 1.2rem; }
+  h2 { font-size: 1.2rem; font-weight: 600; margin: 2.5rem 0 0.8rem; }
+  h3 { font-size: 1rem; font-weight: 600; margin: 1.8rem 0 0.6rem; }
+  p { color: var(--text2); margin-bottom: 0.9rem; line-height: 1.75; font-size: 0.95rem; }
+  p strong { color: var(--text); font-weight: 600; }
+  ul, ol { padding-left: 1.4rem; margin-bottom: 0.9rem; }
+  li { color: var(--text2); margin-bottom: 0.3rem; line-height: 1.7; font-size: 0.93rem; }
+  li strong { color: var(--text); }
+
+  code { font-family: var(--mono); font-size: 0.8em; background: var(--bg3); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--red); }
+
+  .code-block { background: #1e1e2e; border-radius: var(--radius); overflow: hidden; margin: 1.2rem 0; font-family: var(--mono); font-size: 12.5px; line-height: 1.75; }
+  .code-block-header { display: flex; align-items: center; padding: 8px 14px; background: #2a2a3e; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .code-lang { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #7c7c99; }
+  .code-block pre { padding: 1.2rem 1.4rem; overflow-x: auto; color: #cdd6f4; }
+  .kw { color: #cba6f7; } .sel { color: #89b4fa; } .prop { color: #94e2d5; }
+  .val { color: #fab387; } .cmt { color: #6c7086; font-style: italic; }
+  .tag { color: #f38ba8; } .attr { color: #f9e2af; } .str { color: #a6e3a1; }
+
+  .demo { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 1.5rem 0; }
+  .demo-label { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: var(--bg2); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-a { background: #ffbd2e; } .dot-g { background: #28ca41; }
+  .demo-split { display: grid; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .demo-split { grid-template-columns: 1fr; } }
+  .demo-code-pane { background: #1e1e2e; padding: 1.2rem 1.4rem; font-family: var(--mono); font-size: 12.5px; line-height: 1.75; color: #cdd6f4; overflow-x: auto; border-right: 1px solid var(--border); }
+  .demo-result { padding: 1.5rem; background: #ffffff; display: flex; align-items: center; justify-content: center; min-height: 130px; }
+
+  .collapse-wrap { margin: 1.2rem 0; }
+  .collapse-toggle { width: 100%; display: flex; align-items: center; gap: 0.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.7rem 1rem; cursor: pointer; font-family: var(--sans); font-size: 0.88rem; font-weight: 500; color: var(--text2); text-align: left; transition: background 0.15s; }
+  .collapse-toggle:hover { background: var(--bg3); color: var(--text); }
+  .collapse-toggle .arrow { margin-left: auto; font-size: 10px; transition: transform 0.2s; color: var(--text3); }
+  .collapse-toggle.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; }
+  .collapse-toggle.open .arrow { transform: rotate(90deg); }
+  .collapse-body { display: none; border: 1px solid var(--border); border-top: none; border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius); overflow: hidden; }
+  .collapse-body.open { display: block; }
+  .collapse-body .code-block { margin: 0; border-radius: 0; }
+
+  .callout { display: flex; gap: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1.1rem; margin: 1.2rem 0; }
+  .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .callout p { margin: 0; font-size: 0.88rem; }
+  .callout.blue { background: var(--accent-bg); border-color: #bdd4f7; }
+  .callout.amber { background: var(--amber-bg); border-color: #f0dfa0; }
+  .callout.green { background: var(--green-bg); border-color: #b7e2cc; }
+  .callout.purple { background: var(--bs-bg); border-color: #d6bcfa; }
+
+  .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  th { background: var(--bg2); padding: 9px 14px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.04em; color: var(--text3); border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  td:first-child { font-family: var(--mono); font-size: 12px; color: var(--bs); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg2); }
+
+  /* ── GRID VISUAL ── */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    margin: 1rem 0;
+  }
+  .grid-cell {
+    background: #e9d5ff;
+    border: 1px solid #c4b5fd;
+    border-radius: 3px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--bs);
+    font-weight: 700;
+  }
+  .grid-col {
+    background: #7952b3;
+    border-radius: 3px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial;
+    font-size: 11px;
+    color: white;
+    font-weight: 700;
+  }
+
+  /* ── COMPONENTES DEMO ── */
+  .bs-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin: 4px;
+  }
+  .bs-btn-primary { background: #0d6efd; color: white; }
+  .bs-btn-success { background: #198754; color: white; }
+  .bs-btn-danger  { background: #dc3545; color: white; }
+  .bs-btn-warning { background: #ffc107; color: #212529; }
+  .bs-btn-outline { background: transparent; color: #0d6efd; border: 2px solid #0d6efd; }
+
+  .bs-alert {
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-family: Arial;
+    font-size: 13px;
+    margin: 6px 0;
+  }
+  .bs-alert-success { background: #d1e7dd; color: #0a3622; border: 1px solid #a3cfbb; }
+  .bs-alert-danger  { background: #f8d7da; color: #58151c; border: 1px solid #f1aeb5; }
+  .bs-alert-info    { background: #cff4fc; color: #055160; border: 1px solid #9eeaf9; }
+
+  .bs-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: 700;
+    margin: 3px;
+  }
+  .bs-badge-primary { background: #0d6efd; color: white; }
+  .bs-badge-success { background: #198754; color: white; }
+  .bs-badge-danger  { background: #dc3545; color: white; }
+
+  /* ── BREAKPOINT CARDS ── */
+  .bp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 1rem 0; }
+  .bp-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem; text-align: center; }
+  .bp-prefix { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--bs); margin-bottom: 4px; }
+  .bp-range { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
+  .bp-device { font-size: 11px; color: var(--text2); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<nav class="sticky-nav" id="nav">
+  <a href="#intro">Introdução</a>
+  <a href="#instalacao">Instalação</a>
+  <a href="#grid">Sistema de Grid</a>
+  <a href="#breakpoints">Breakpoints</a>
+  <a href="#componentes">Componentes</a>
+  <a href="#utilitarios">Utilitários</a>
+  <a href="#resumo">Quando Usar</a>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <span class="module-tag">Módulo II · Referência</span>
+    <h1 class="page-title">Bootstrap</h1>
+    <p class="page-intro">Bootstrap é o framework CSS mais popular do mundo — um conjunto de classes prontas que permitem criar layouts responsivos e componentes visuais sem escrever CSS do zero.</p>
+  </header>
+
+  <nav class="toc">
+    <p class="toc-title">Nesta página</p>
+    <ol>
+      <li><a href="#intro">O que é o Bootstrap</a></li>
+      <li><a href="#instalacao">Como instalar</a></li>
+      <li><a href="#grid">O sistema de grid de 12 colunas</a></li>
+      <li><a href="#breakpoints">Breakpoints e classes responsivas</a></li>
+      <li><a href="#componentes">Componentes prontos</a></li>
+      <li><a href="#utilitarios">Classes utilitárias</a></li>
+      <li><a href="#resumo">Quando usar Bootstrap</a></li>
+    </ol>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       1. INTRODUÇÃO
+  ══════════════════════════════════ -->
+  <section class="section" id="intro">
+    <h1>O que é o Bootstrap</h1>
+
+    <p>Bootstrap é um <strong>framework CSS</strong> — uma biblioteca de estilos e componentes já prontos que você adiciona ao seu projeto. Em vez de escrever CSS para cada botão, card ou menu, você usa as <strong>classes do Bootstrap</strong> diretamente no HTML.</p>
+
+    <div class="callout purple">
+      <span class="callout-icon">📦</span>
+      <div><p><strong>Framework vs CSS puro:</strong> CSS puro dá controle total, mas você escreve tudo. Bootstrap acelera o desenvolvimento com componentes prontos, mas você fica limitado ao visual padrão dele — a menos que personalize.</p></div>
+    </div>
+
+    <p>As principais vantagens do Bootstrap:</p>
+    <ul>
+      <li><strong>Responsividade automática</strong> — o grid se adapta a qualquer tela com classes simples</li>
+      <li><strong>Componentes prontos</strong> — botões, alertas, menus, cards, modais e muito mais</li>
+      <li><strong>Consistência visual</strong> — tudo segue o mesmo padrão de design</li>
+      <li><strong>Velocidade</strong> — você prototipa um site em horas, não dias</li>
+    </ul>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       2. INSTALAÇÃO
+  ══════════════════════════════════ -->
+  <section class="section" id="instalacao">
+    <h1>Como Instalar</h1>
+
+    <p>A forma mais simples é via <strong>CDN</strong> — você adiciona um link no <code>&lt;head&gt;</code> e o Bootstrap já está disponível, sem precisar instalar nada.</p>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="code-lang">html</span></div>
+      <pre><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="str">"pt-BR"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"viewport"</span> <span class="attr">content</span>=<span class="str">"width=device-width, initial-scale=1"</span><span class="tag">&gt;</span>
+
+  <span class="cmt">&lt;!-- Bootstrap CSS --&gt;</span>
+  <span class="tag">&lt;link</span>
+    <span class="attr">href</span>=<span class="str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"</span>
+    <span class="attr">rel</span>=<span class="str">"stylesheet"</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;title&gt;</span>Meu Site<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+  <span class="cmt">&lt;!-- Seu conteúdo aqui --&gt;</span>
+
+  <span class="cmt">&lt;!-- Bootstrap JS (necessário para componentes interativos) --&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+    </div>
+
+    <div class="callout amber">
+      <span class="callout-icon">⚠️</span>
+      <div><p>A tag <code>&lt;meta name="viewport"&gt;</code> é obrigatória para o Bootstrap funcionar corretamente em dispositivos móveis. Não esqueça dela.</p></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       3. SISTEMA DE GRID
+  ══════════════════════════════════ -->
+  <section class="section" id="grid">
+    <h1>O Sistema de Grid de 12 Colunas</h1>
+
+    <p>O coração do Bootstrap é o seu sistema de grid. A página é dividida em <strong>12 colunas invisíveis</strong>, e você define quantas colunas cada elemento ocupa.</p>
+
+    <div class="grid-12">
+      <div class="grid-cell">1</div><div class="grid-cell">2</div><div class="grid-cell">3</div>
+      <div class="grid-cell">4</div><div class="grid-cell">5</div><div class="grid-cell">6</div>
+      <div class="grid-cell">7</div><div class="grid-cell">8</div><div class="grid-cell">9</div>
+      <div class="grid-cell">10</div><div class="grid-cell">11</div><div class="grid-cell">12</div>
+    </div>
+
+    <p>Para usar o grid, você precisa de três elementos:</p>
+    <ul>
+      <li><strong><code>.container</code></strong> — centraliza e limita a largura do conteúdo</li>
+      <li><strong><code>.row</code></strong> — cria uma linha na grade</li>
+      <li><strong><code>.col-*</code></strong> — define quantas colunas o elemento ocupa (1 a 12)</li>
+    </ul>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>exemplos de divisão em 12 colunas</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="cmt">&lt;!-- Duas colunas iguais: 6 + 6 = 12 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-6"</span><span class="tag">&gt;</span>Metade<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-6"</span><span class="tag">&gt;</span>Metade<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Três colunas: 4 + 4 + 4 = 12 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-4"</span><span class="tag">&gt;</span>Um terço<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-4"</span><span class="tag">&gt;</span>Um terço<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-4"</span><span class="tag">&gt;</span>Um terço<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Sidebar + conteúdo: 3 + 9 = 12 --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-3"</span><span class="tag">&gt;</span>Sidebar<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-9"</span><span class="tag">&gt;</span>Conteúdo<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:10px;align-items:stretch;padding:1.2rem;background:white;">
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">col-6 + col-6</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div class="grid-col">6 colunas</div>
+              <div class="grid-col">6 colunas</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">col-4 + col-4 + col-4</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+              <div class="grid-col">4 col</div>
+              <div class="grid-col">4 col</div>
+              <div class="grid-col">4 col</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">col-3 + col-9</p>
+            <div style="display:grid;grid-template-columns:1fr 3fr;gap:6px;">
+              <div class="grid-col" style="font-size:10px">3 col</div>
+              <div class="grid-col">9 colunas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <span class="callout-icon">💡</span>
+      <div><p>A soma das colunas dentro de uma <code>.row</code> deve sempre dar <strong>12</strong>. Se der menos, sobra espaço. Se der mais de 12, o que passar quebra para a linha de baixo.</p></div>
+    </div>
+
+    <h2><code>col</code> sem número — divisão automática</h2>
+    <p>Se você usar só <code>col</code> sem número, o Bootstrap divide o espaço <strong>igualmente</strong> entre todos os filhos automaticamente.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>col sem número — divisão automática</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">/* Cada col ocupa 3 colunas
+   (12 ÷ 4 = 3) automaticamente */</span></pre></div>
+        <div class="demo-result" style="align-items:stretch;padding:1.2rem;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;width:100%">
+            <div class="grid-col" style="font-size:10px">Auto</div>
+            <div class="grid-col" style="font-size:10px">Auto</div>
+            <div class="grid-col" style="font-size:10px">Auto</div>
+            <div class="grid-col" style="font-size:10px">Auto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       4. BREAKPOINTS
+  ══════════════════════════════════ -->
+  <section class="section" id="breakpoints">
+    <h1>Breakpoints e Classes Responsivas</h1>
+
+    <p>A grande mágica do Bootstrap é poder definir layouts <strong>diferentes para cada tamanho de tela</strong> usando apenas classes no HTML — sem escrever media queries.</p>
+
+    <p>O Bootstrap tem 6 breakpoints, cada um com um prefixo:</p>
+
+    <div class="bp-grid">
+      <div class="bp-card">
+        <div class="bp-prefix">col-</div>
+        <div class="bp-range">0px em diante</div>
+        <div class="bp-device">Todos</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-prefix">col-sm-</div>
+        <div class="bp-range">576px+</div>
+        <div class="bp-device">Mobile grande</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-prefix">col-md-</div>
+        <div class="bp-range">768px+</div>
+        <div class="bp-device">Tablet</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-prefix">col-lg-</div>
+        <div class="bp-range">992px+</div>
+        <div class="bp-device">Laptop</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-prefix">col-xl-</div>
+        <div class="bp-range">1200px+</div>
+        <div class="bp-device">Desktop</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-prefix">col-xxl-</div>
+        <div class="bp-range">1400px+</div>
+        <div class="bp-device">Desktop grande</div>
+      </div>
+    </div>
+
+    <h2>Combinando breakpoints</h2>
+    <p>Você combina as classes para definir comportamentos diferentes por tela. O Bootstrap aplica a classe do breakpoint mais próximo abaixo.</p>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>layout responsivo com breakpoints</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"col-12 col-md-6 col-lg-4"</span><span class="tag">&gt;</span>
+    Card
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">/* Mobile:  col-12 → 1 coluna
+   Tablet:  col-md-6 → 2 colunas
+   Desktop: col-lg-4 → 3 colunas */</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;gap:12px;background:white;align-items:stretch;padding:1.2rem;">
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">📱 Mobile — col-12</p>
+            <div style="display:grid;grid-template-columns:1fr;gap:6px;">
+              <div class="grid-col" style="font-size:10px">Card 1</div>
+              <div class="grid-col" style="font-size:10px">Card 2</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">📟 Tablet — col-md-6</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div class="grid-col" style="font-size:10px">Card 1</div>
+              <div class="grid-col" style="font-size:10px">Card 2</div>
+            </div>
+          </div>
+          <div>
+            <p style="font-family:Arial;font-size:10px;color:#888;margin-bottom:4px">💻 Desktop — col-lg-4</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+              <div class="grid-col" style="font-size:10px">Card 1</div>
+              <div class="grid-col" style="font-size:10px">Card 2</div>
+              <div class="grid-col" style="font-size:10px">Card 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       5. COMPONENTES
+  ══════════════════════════════════ -->
+  <section class="section" id="componentes">
+    <h1>Componentes Prontos</h1>
+
+    <p>Além do grid, o Bootstrap oferece dezenas de componentes visuais prontos. Você usa as classes certas no HTML e o componente já aparece estilizado.</p>
+
+    <h2>Botões</h2>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>botões — variações por classe</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn btn-primary"</span><span class="tag">&gt;</span>
+  Primary
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn btn-success"</span><span class="tag">&gt;</span>
+  Success
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn btn-danger"</span><span class="tag">&gt;</span>
+  Danger
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn btn-outline-primary"</span><span class="tag">&gt;</span>
+  Outline
+<span class="tag">&lt;/button&gt;</span></pre></div>
+        <div class="demo-result" style="flex-wrap:wrap;gap:6px;">
+          <button class="bs-btn bs-btn-primary">Primary</button>
+          <button class="bs-btn bs-btn-success">Success</button>
+          <button class="bs-btn bs-btn-danger">Danger</button>
+          <button class="bs-btn bs-btn-warning">Warning</button>
+          <button class="bs-btn bs-btn-outline">Outline</button>
+        </div>
+      </div>
+    </div>
+
+    <h2>Alertas</h2>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>alertas — feedback visual</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"alert alert-success"</span><span class="tag">&gt;</span>
+  Salvo com sucesso!
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"alert alert-danger"</span><span class="tag">&gt;</span>
+  Erro ao enviar.
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"alert alert-info"</span><span class="tag">&gt;</span>
+  Dica importante.
+<span class="tag">&lt;/div&gt;</span></pre></div>
+        <div class="demo-result" style="flex-direction:column;align-items:stretch;padding:1.2rem;background:white;gap:0;">
+          <div class="bs-alert bs-alert-success">✅ Salvo com sucesso!</div>
+          <div class="bs-alert bs-alert-danger">❌ Erro ao enviar.</div>
+          <div class="bs-alert bs-alert-info">💡 Dica importante.</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Badges</h2>
+
+    <div class="demo">
+      <div class="demo-label"><span class="dot dot-r"></span><span class="dot dot-a"></span><span class="dot dot-g"></span>badges — rótulos e contadores</div>
+      <div class="demo-split">
+        <div class="demo-code-pane"><pre><span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"badge bg-primary"</span><span class="tag">&gt;</span>
+  Novo
+<span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"badge bg-success"</span><span class="tag">&gt;</span>
+  Ativo
+<span class="tag">&lt;/span&gt;</span>
+
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"badge bg-danger"</span><span class="tag">&gt;</span>
+  42
+<span class="tag">&lt;/span&gt;</span></pre></div>
+        <div class="demo-result" style="gap:6px;">
+          <span class="bs-badge bs-badge-primary">Novo</span>
+          <span class="bs-badge bs-badge-success">Ativo</span>
+          <span class="bs-badge bs-badge-danger">42</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-wrap">
+      <button class="collapse-toggle" onclick="toggleCollapse(this)">
+        📄 Ver exemplo completo com vários componentes
+        <span class="arrow">▶</span>
+      </button>
+      <div class="collapse-body">
+        <div class="code-block">
+          <div class="code-block-header"><span class="code-lang">html</span></div>
+          <pre><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"container mt-4"</span><span class="tag">&gt;</span>
+
+  <span class="cmt">&lt;!-- Card com grid interno --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"card"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"card-body"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h5</span> <span class="attr">class</span>=<span class="str">"card-title"</span><span class="tag">&gt;</span>
+        Título
+        <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"badge bg-primary"</span><span class="tag">&gt;</span>Novo<span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;/h5&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"card-text"</span><span class="tag">&gt;</span>Conteúdo do card.<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"btn btn-primary"</span><span class="tag">&gt;</span>Ação<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+
+  <span class="cmt">&lt;!-- Alerta --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"alert alert-success mt-3"</span><span class="tag">&gt;</span>
+    Operação realizada com sucesso!
+  <span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;/div&gt;</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       6. UTILITÁRIOS
+  ══════════════════════════════════ -->
+  <section class="section" id="utilitarios">
+    <h1>Classes Utilitárias</h1>
+
+    <p>Além do grid e dos componentes, o Bootstrap tem <strong>classes utilitárias</strong> — classes que fazem uma coisa só, mas que você usa em qualquer elemento. Elas substituem CSS simples que você escreveria do zero.</p>
+
+    <h2>Espaçamento — <code>m</code> e <code>p</code></h2>
+    <p>Controla margin e padding sem escrever CSS. A lógica é: <code>{propriedade}{lado}-{tamanho}</code>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td>m-3</td><td><code>margin</code> em todos os lados (tamanho 3)</td></tr>
+          <tr><td>mt-2</td><td><code>margin-top</code> (t = top)</td></tr>
+          <tr><td>mb-4</td><td><code>margin-bottom</code> (b = bottom)</td></tr>
+          <tr><td>mx-auto</td><td><code>margin-left</code> e <code>margin-right: auto</code> — centraliza</td></tr>
+          <tr><td>p-3</td><td><code>padding</code> em todos os lados</td></tr>
+          <tr><td>px-4</td><td><code>padding-left</code> e <code>padding-right</code> (x = horizontal)</td></tr>
+          <tr><td>py-2</td><td><code>padding-top</code> e <code>padding-bottom</code> (y = vertical)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Texto</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td>text-center</td><td><code>text-align: center</code></td></tr>
+          <tr><td>text-end</td><td><code>text-align: right</code></td></tr>
+          <tr><td>fw-bold</td><td><code>font-weight: bold</code></td></tr>
+          <tr><td>text-primary</td><td>Cor azul do Bootstrap</td></tr>
+          <tr><td>text-muted</td><td>Texto cinza apagado</td></tr>
+          <tr><td>fs-4</td><td>Tamanho de fonte (1 = maior, 6 = menor)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Display e Flexbox</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td>d-flex</td><td><code>display: flex</code></td></tr>
+          <tr><td>d-none</td><td><code>display: none</code></td></tr>
+          <tr><td>d-md-block</td><td><code>display: block</code> apenas em tablets e acima</td></tr>
+          <tr><td>justify-content-center</td><td><code>justify-content: center</code></td></tr>
+          <tr><td>align-items-center</td><td><code>align-items: center</code></td></tr>
+          <tr><td>gap-3</td><td><code>gap</code> entre os itens flex</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout amber">
+      <span class="callout-icon">💡</span>
+      <div><p>As classes de display também aceitam breakpoints: <code>d-none d-md-block</code> esconde o elemento no mobile e mostra a partir do tablet. Isso é muito usado para mostrar/esconder menus diferentes por dispositivo.</p></div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════
+       7. QUANDO USAR
+  ══════════════════════════════════ -->
+  <section class="section" id="resumo">
+    <h1>Quando Usar Bootstrap</h1>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Use Bootstrap quando...</th><th>Prefira CSS puro quando...</th></tr></thead>
+        <tbody>
+          <tr><td>Precisa prototipar rápido</td><td>Quer controle total do visual</td></tr>
+          <tr><td>Não quer escrever muito CSS</td><td>Está aprendendo e quer entender como funciona</td></tr>
+          <tr><td>Precisa de componentes prontos</td><td>O design é muito específico ou personalizado</td></tr>
+          <tr><td>O projeto é interno ou MVP</td><td>Performance é crítica (Bootstrap adiciona peso)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green">
+      <span class="callout-icon">🎯</span>
+      <div><p>Bootstrap é uma <strong>ferramenta de produtividade</strong>, não um substituto para aprender CSS. Entender Flexbox, Grid e Box Model é fundamental — o Bootstrap é apenas um atalho que usa esses conceitos por baixo dos panos.</p></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function toggleCollapse(btn) {
+    const body = btn.nextElementSibling;
+    btn.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+
+  const sections = ['intro','instalacao','grid','breakpoints','componentes','utilitarios','resumo'];
+  const navLinks = document.querySelectorAll('#nav a');
+
+  function updateNav() {
+    let current = sections[0];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 60) current = id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+</script>
+</body>
+</html>

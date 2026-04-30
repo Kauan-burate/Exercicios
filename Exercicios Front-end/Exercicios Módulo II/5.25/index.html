@@ -21,11 +21,12 @@
         
       }
       .pricing-plan{
-        background-color: rgb(179, 180, 180);
+        background-color: rgb(227, 227, 227);
         height: 200px;
         width: 200px;
-        border: 2px solid black;
+        border-radius: 15px;
         position: relative;
+
 
       }
       .plan-title{
@@ -41,7 +42,7 @@
       }
       .plan-button{
         background-color: orangered;
-        border-radius: 5px;
+        border-radius: 10px;
         color: aliceblue;
         font-weight: bold;
         align-items: center;
@@ -55,7 +56,13 @@
 
       /* Dica: O que você consegue fazer com media query e flexbox ? */
       @media (max-width: 1250px) {
-        
+        .pricing-container{
+        display: block;
+        margin-left: 27%;
+      }
+      .pricing-plan{
+        margin-top: 10%;
+      }
       }
       
     </style>
