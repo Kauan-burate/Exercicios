@@ -4,31 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contato</title>
-    <link rel="stylesheet" href="style.css">
+    
+     <style>
+        /*MENU*/
+header{
+    background-color: rgb(0, 0, 158);
+    color: white;
+    display: flex;
+}
+a{
+    text-decoration: none;
+    color: white;
+    float: right;
+    text-align: center;
+    margin: 0;
+    padding: 50%;
+    font-size: 18px;
+    
+}
+ul{
+    list-style-type: none;
+    
+}
+li{
+    display: inline-flex;
+    padding-left: 50px;
+}
+footer{
+    background-color:  rgb(0, 0, 158);
+    color: white;
+    display: flex;
+}
+footer > img{
+    height: 115px;
+    width: 115px;
+}
+
+.logo > img{
+    height: 115px;
+    width: 115px;
+}
+
+     </style>
+
+
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="logo">
-                <img src="./assets/icons/logo.png" alt="">
-            </div>
-            <div id="menu">
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="cursos.html">Cursos</a></li>
-                    <li><a href="contato.html">Contato</a></li>
-                </ul>
-            </div>
+        <div class="logo">
+            <img src="./assets/icons/logo.png" alt="">
         </div>
+        <div id="menu">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="cursos.html">Cursos</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </div>
+        
     </header>
 
     <section id="hero">
         <div class="container">
-            <h1>Aprenda.</h1>
-            <h1>Crie.</h1>
-            <h1>Evolua.</h1>
-            <Button><a href="cursos.html"></a>Cursos</Button>
-            
+            <div class="card">
+                <h1>Aprenda.<br>Crie.<br>Evolua.</h1>
+                <button> Cursos<a href="./cursos.html"></a></button>
+            </div>
+            <div class="card">
+                <img src="./assets/img/estudante.jpg" alt="">
+
+            </div>
+           
+          
         </div>
 
 

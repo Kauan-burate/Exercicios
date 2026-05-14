@@ -1,6 +1,8 @@
+/*MENU*/
 header{
     background-color: rgb(0, 0, 158);
     color: white;
+    display: flex;
 }
 a{
     text-decoration: none;
@@ -9,61 +11,65 @@ a{
     text-align: center;
     margin: 0;
     padding: 50%;
-    margin-left: 100%;
     font-size: 18px;
+    
 }
 ul{
     list-style-type: none;
-
+    
 }
 li{
     display: inline-flex;
-    
+    padding-left: 50px;
 }
 footer{
     background-color:  rgb(0, 0, 158);
     color: white;
-}
-.container{
     display: flex;
-    
 }
-img{
+footer > img{
     height: 115px;
     width: 115px;
 }
 
-#hero .container{
-    background-color: rgb(165, 160, 160);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.logo > img{
+    height: 115px;
+    width: 115px;
 }
 
-#hero h1{
-    color: white;
-    font-size: 50px;
-    line-height: 50px;
+
+/*PRINCIPAL*/
+.container{
+    display: flex; 
+    gap: 50%;
+
+}
+
+.conteiner > .card{
+    height: 40%;
+    width: 45%;
+    display: inline-block;
+    margin: 5%;
+    padding: 5%;
+}
+.card > h1{
+    color: rgb(0, 0, 158);
+    text-align: justify;
+    font-size: 55px;
+    padding-left: 40%;
+}
+.card > img{
+    padding-right: 40%;
+}
+.card > button{
+    height: 7%;
+    margin-left: 45%;
+    background-color: rgb(242, 242, 0);
+    border-color: white;
+    font-size: 20px;
+    font-style: italic;
+    margin-bottom: 15%;
     
 }
 
-#hero button{
-    margin-top: 5px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #ffd000;
-    cursor: pointer;
-    transition: 0.3s;
-}
 
-#hero button:hover{
-    background-color: #ffb700;
-}
-
-#hero button a{
-    text-decoration: none;
-    color: #081b4b;
-    font-size: 18px;
-    font-weight: bold;
-}
