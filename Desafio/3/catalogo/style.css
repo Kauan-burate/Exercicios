@@ -1,0 +1,61 @@
+body{
+    background-color: rgb(212, 209, 209);
+    margin: 0;
+}
+header{
+    background-color: rgb(56, 56, 57);
+    color: white;
+    display: flex;
+}
+a{
+    text-decoration: none;
+    color: white;
+    float: right;
+    text-align: center;
+    margin: 0;
+    padding: 50%;
+    font-size: 18px;
+    
+}
+ul{
+    list-style-type: none;
+    
+}
+li{
+    display: inline-flex;
+    padding-left: 50px;
+}
+
+.container{
+    margin: auto;
+    width: max-content;
+}
+.card{
+    display: inline-block;
+    background-color: white;
+    margin: 5%;
+    padding: 10%;
+
+}
+button{
+    background-color: yellow;
+}
+.container{
+    display: flex;
+}
+.principal > img{
+    display: flex;
+
+}
+.card > img{
+    width: 100%;
+    object-fit: cover;
+}
+
+footer{
+    background-color:  rgb(56, 56, 57);
+    color: white;
+    display: inline-block;
+    width: 100%;
+    
+}
