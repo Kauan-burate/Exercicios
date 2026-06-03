@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulado DETRAN-SC — Placas & Vias</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f2f0eb;
+  --surface: #ffffff;
+  --card: #fafaf8;
+  --border: #d8d4cc;
+  --border2: #c8c2b8;
+  --ink: #1a1714;
+  --ink2: #4a443c;
+  --muted: #8c8278;
+  --accent: #c0392b;
+  --accent-dark: #922b21;
+  --gold: #b8860b;
+  --green: #1e6e3a;
+  --green-l: #27ae60;
+  --red: #c0392b;
+  --blue: #1a4a8a;
+  --yellow-sign: #f5c518;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Source Sans 3',sans-serif;min-height:100vh;padding-bottom:6rem;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,0,0,0.03) 39px,rgba(0,0,0,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,0,0,0.03) 39px,rgba(0,0,0,0.03) 40px)}
+
+/* ─── HEADER ─── */
+.header{background:var(--accent);color:#fff;padding:0}
+.header-top{background:var(--accent-dark);padding:0.4rem 2rem;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:0.9}
+.header-main{padding:1.8rem 2rem 1.6rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.shield{width:54px;height:64px;background:#fff;clip-path:polygon(50% 0%,100% 15%,100% 70%,50% 100%,0% 70%,0% 15%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.shield-inner{font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;color:var(--accent);text-align:center;line-height:1.1}
+.header-text h1{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;letter-spacing:2px;line-height:1;text-shadow:0 2px 4px rgba(0,0,0,0.3)}
+.header-text p{font-size:13px;opacity:0.82;margin-top:4px}
+.header-badge{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.badge-pill{background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);border-radius:4px;padding:3px 10px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600}
+
+/* ─── STATS BAR ─── */
+.stats-bar{background:var(--ink);color:#fff;padding:0.75rem 2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:100}
+.stat{display:flex;align-items:center;gap:8px;font-size:13px}
+.stat .label{opacity:0.6;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.stat .value{font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600}
+.stat.ok .value{color:#4ade80}
+.stat.err .value{color:#f87171}
+.stat.pend .value{color:#fbbf24}
+.prog-wrap{flex:1;min-width:120px}
+.prog-bg{background:rgba(255,255,255,0.15);border-radius:2px;height:4px}
+.prog-fill{background:linear-gradient(90deg,#4ade80,#22c55e);height:4px;border-radius:2px;transition:width .5s ease}
+
+/* ─── MAIN ─── */
+.main{max-width:920px;margin:0 auto;padding:2rem 1rem}
+.section-head{display:flex;align-items:center;gap:12px;margin:2.5rem 0 1.2rem}
+.section-head .line{flex:1;height:1px;background:var(--border2)}
+.section-head .title{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:3px;text-transform:uppercase;color:var(--ink2);white-space:nowrap;background:var(--bg);padding:0 12px}
+
+/* ─── QUESTION CARD ─── */
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:1.1rem;overflow:hidden;box-shadow:var(--shadow);transition:border-color .3s,box-shadow .3s}
+.qcard.ok{border-color:rgba(39,174,96,0.6);box-shadow:0 2px 12px rgba(39,174,96,0.15)}
+.qcard.err{border-color:rgba(192,57,43,0.5);box-shadow:0 2px 12px rgba(192,57,43,0.12)}
+.qcard-top{display:flex;align-items:stretch;gap:0}
+.qcard-accent{width:5px;flex-shrink:0;background:var(--border2);transition:background .3s}
+.qcard.ok .qcard-accent{background:var(--green-l)}
+.qcard.err .qcard-accent{background:var(--red)}
+.qcard-body{flex:1;padding:1.1rem 1.2rem 0.9rem}
+.q-meta{display:flex;align-items:center;gap:8px;margin-bottom:0.6rem;flex-wrap:wrap}
+.q-num{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.q-cat{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:3px;padding:2px 7px}
+.q-dif{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;border-radius:3px;padding:2px 7px}
+.q-dif.hard{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.q-dif.expert{background:#f8d7da;color:#842029;border:1px solid #f5c2c7}
+.q-status{margin-left:auto;font-size:18px}
+.q-tip{background:#fffbe6;border-left:3px solid var(--gold);border-radius:0 4px 4px 0;padding:.45rem .75rem;margin-bottom:.7rem;font-size:12px;color:#5a4700;line-height:1.5}
+
+/* Sign image area */
+.q-sign-area{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:.8rem;flex-wrap:wrap}
+.q-sign{flex-shrink:0}
+.q-text-wrap{flex:1;min-width:180px}
+.q-text{font-size:15px;font-weight:500;line-height:1.6;color:var(--ink)}
+
+/* OPTIONS */
+.options{display:flex;flex-direction:column;gap:6px;margin-top:.6rem}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:.6rem .85rem;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:#fff;font-size:14px;font-family:'Source Sans 3',sans-serif;color:var(--ink);transition:all .15s;width:100%;text-align:left}
+.opt:hover:not(:disabled){background:#f5f2ed;border-color:var(--ink);transform:translateX(2px)}
+.opt:disabled{cursor:default}
+.opt-letter{font-weight:700;font-size:12px;min-width:22px;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:1px 5px;text-align:center;flex-shrink:0;margin-top:2px;font-family:'Oswald',sans-serif;letter-spacing:.5px}
+.opt.correct{background:#eafaf1;border-color:rgba(39,174,96,.7)}
+.opt.correct .opt-letter{background:var(--green-l);color:#fff;border-color:var(--green-l)}
+.opt.wrong{background:#fdf0ee;border-color:rgba(192,57,43,.5)}
+.opt.wrong .opt-letter{background:var(--red);color:#fff;border-color:var(--red)}
+.opt.dim{opacity:.35}
+
+/* FEEDBACK */
+.feedback{display:flex;gap:9px;align-items:flex-start;padding:.65rem .9rem;border-radius:6px;font-size:13px;line-height:1.55;margin-top:.8rem;animation:pop .3s ease}
+.feedback.ok{background:#eafaf1;border:1px solid #a9dfbf;color:#1a6b3a}
+.feedback.err{background:#fdf0ee;border:1px solid #f1948a;color:#7b241c}
+.feedback .fi{font-size:15px;flex-shrink:0;margin-top:1px}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.art-ref{background:rgba(0,0,0,.06);border-radius:3px;padding:1px 5px;font-size:11px;margin-left:4px;font-weight:600}
+
+/* ─── PLACAS SVG ─── */
+.placa{display:block}
+
+/* ─── FINAL ─── */
+.final{background:var(--surface);border:2px solid var(--ink);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;margin-top:2rem;box-shadow:var(--shadow)}
+.final-pct{font-family:'Oswald',sans-serif;font-size:5rem;font-weight:700;color:var(--accent);line-height:1}
+.final-sub{font-size:14px;color:var(--muted);margin-top:4px}
+.final-verdict{display:inline-block;margin-top:1rem;padding:.5rem 1.5rem;border-radius:4px;font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;letter-spacing:1px}
+.final-verdict.ok{background:#eafaf1;color:var(--green);border:2px solid var(--green)}
+.final-verdict.err{background:#fdf0ee;color:var(--red);border:2px solid var(--red)}
+.final-stats{display:flex;gap:14px;justify-content:center;margin:1.5rem 0;flex-wrap:wrap}
+.fs{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.4rem;min-width:100px}
+.fs .n{font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700}
+.fs .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.fs.ok .n{color:var(--green)}
+.fs.err .n{color:var(--red)}
+.fs.gold .n{color:var(--gold)}
+.final-msg{font-size:14px;color:var(--ink2);line-height:1.6}
+.btn-restart{margin-top:1.5rem;padding:.75rem 2rem;background:var(--accent);color:#fff;border:none;border-radius:5px;font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:background .2s}
+.btn-restart:hover{background:var(--accent-dark)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <span>DETRAN-SC · Chapecó · Exame Teórico</span>
+    <span>Código de Trânsito Brasileiro — CTB</span>
+  </div>
+  <div class="header-main">
+    <div class="shield"><div class="shield-inner">DET<br>RAN<br>SC</div></div>
+    <div class="header-text">
+      <h1>SIMULADO AVANÇADO</h1>
+      <p>Placas, Vias e Legislação — Nível Difícil · Feedback em tempo real</p>
+    </div>
+    <div class="header-badge">
+      <div class="badge-pill">🎯 45 Questões</div>
+      <div class="badge-pill">⚠ Nota mínima: 70%</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat pend"><span class="label">Respondidas</span><span class="value" id="s-done">0</span><span style="opacity:.4;font-size:13px">/45</span></div>
+  <div class="stat ok"><span class="label">Acertos</span><span class="value" id="s-ok">0</span></div>
+  <div class="stat err"><span class="label">Erros</span><span class="value" id="s-err">0</span></div>
+  <div class="prog-wrap"><div style="font-size:10px;letter-spacing:1px;opacity:.5;margin-bottom:4px;text-transform:uppercase">Progresso <span id="prog-pct">0%</span></div><div class="prog-bg"><div class="prog-fill" id="prog-bar" style="width:0%"></div></div></div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+// ─── SVG PLACAS ───────────────────────────────────────────────────────────────
+function placaPare(){
+  return `<svg class="placa" width="90" height="90" viewBox="0 0 90 90">
+    <polygon points="45,5 85,25 85,65 45,85 5,65 5,25" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+    <polygon points="45,12 79,29 79,61 45,78 11,61 11,29" fill="none" stroke="#fff" stroke-width="2"/>
+    <text x="45" y="52" font-family="Arial Black,sans-serif" font-size="18" font-weight="900" fill="#fff" text-anchor="middle">PARE</text>
+  </svg>`
+}
+function placaPreferencia(){
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <polygon points="40,5 75,5 75,40 40,75 5,40 5,5" fill="#fff" stroke="#c0392b" stroke-width="4"/>
+    <polygon points="40,14 67,14 67,40 40,66 13,40 13,14" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+    <text x="40" y="34" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#c0392b" text-anchor="middle">DÊ A</text>
+    <text x="40" y="46" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#c0392b" text-anchor="middle">PREFERÊNCIA</text>
+  </svg>`
+}
+function placaVelocidade(vel){
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="37" fill="#fff" stroke="#c0392b" stroke-width="5"/>
+    <circle cx="40" cy="40" r="31" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="40" y="33" font-family="Arial,sans-serif" font-size="9" fill="#1a1714" text-anchor="middle">VELOCIDADE</text>
+    <text x="40" y="35" font-family="Arial,sans-serif" font-size="9" fill="#1a1714" text-anchor="middle">MÁXIMA</text>
+    <text x="40" y="55" font-family="Arial Black,sans-serif" font-size="22" font-weight="900" fill="#c0392b" text-anchor="middle">${vel}</text>
+  </svg>`
+}
+function placaProibidoPassar(){
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="37" fill="#fff" stroke="#c0392b" stroke-width="5"/>
+    <line x1="15" y1="40" x2="65" y2="40" stroke="#c0392b" stroke-width="10"/>
+    <text x="40" y="28" font-family="Arial,sans-serif" font-size="8" fill="#1a1714" text-anchor="middle">PROIBIDO</text>
+    <text x="40" y="63" font-family="Arial,sans-serif" font-size="8" fill="#1a1714" text-anchor="middle">ULTRAPASSAR</text>
+  </svg>`
+}
+function placaAdvertencia(icon){
+  const icons={
+    curva:`<path d="M40 55 Q40 35 55 28" stroke="#1a1714" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M55 28 Q62 22 58 15" stroke="#1a1714" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+    obras:`<rect x="28" y="35" width="24" height="18" fill="#f5c518" stroke="#1a1714" stroke-width="1.5" rx="1"/><line x1="28" y1="35" x2="52" y2="35" stroke="#1a1714" stroke-width="2"/><text x="40" y="48" font-family="Arial Black" font-size="10" font-weight="900" fill="#1a1714" text-anchor="middle">OBRA</text>`,
+    ped:`<circle cx="40" cy="25" r="5" fill="#1a1714"/><line x1="40" y1="30" x2="40" y2="48" stroke="#1a1714" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="38" x2="32" y2="44" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="40" y1="38" x2="48" y2="44" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="40" y1="48" x2="34" y2="60" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="40" y1="48" x2="46" y2="60" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/>`,
+    school:`<text x="40" y="48" font-family="Arial Black" font-size="28" font-weight="900" fill="#1a1714" text-anchor="middle">E</text>`,
+    animal:`<ellipse cx="40" cy="38" rx="14" ry="10" fill="#1a1714"/><circle cx="30" cy="30" r="5" fill="#1a1714"/><circle cx="50" cy="30" r="5" fill="#1a1714"/><line x1="26" y1="48" x2="22" y2="58" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="33" y1="48" x2="30" y2="58" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="47" y1="48" x2="50" y2="58" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/><line x1="54" y1="48" x2="58" y2="58" stroke="#1a1714" stroke-width="2.5" stroke-linecap="round"/>`,
+  }
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <polygon points="40,5 75,68 5,68" fill="#f5c518" stroke="#1a1714" stroke-width="4"/>
+    <polygon points="40,14 68,63 12,63" fill="none" stroke="#1a1714" stroke-width="1.5"/>
+    ${icons[icon]||''}
+  </svg>`
+}
+function placaObrigatorio(tipo){
+  const icons={
+    direita:`<polygon points="40,20 58,40 48,40 48,58 32,58 32,40 22,40" fill="#fff"/>`,
+    mao_unica:`<rect x="24" y="34" width="32" height="12" fill="#fff" rx="2"/><polygon points="56,40 44,28 44,52" fill="#fff"/>`,
+    ciclovia:`<circle cx="40" cy="50" r="10" fill="none" stroke="#fff" stroke-width="3"/><circle cx="40" cy="28" r="5" fill="#fff"/><line x1="40" y1="33" x2="40" y2="45" stroke="#fff" stroke-width="3"/>`,
+    pedestres:`<circle cx="40" cy="28" r="5" fill="#fff"/><line x1="40" y1="33" x2="40" y2="50" stroke="#fff" stroke-width="3"/><line x1="40" y1="42" x2="32" y2="47" stroke="#fff" stroke-width="2.5"/><line x1="40" y1="50" x2="33" y2="58" stroke="#fff" stroke-width="2.5"/><line x1="40" y1="50" x2="47" y2="58" stroke="#fff" stroke-width="2.5"/>`,
+  }
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="37" fill="#1a4a8a" stroke="#fff" stroke-width="3"/>
+    ${icons[tipo]||''}
+  </svg>`
+}
+function placaIndicacao(texto,cor){
+  cor=cor||'#1a4a8a'
+  return `<svg class="placa" width="110" height="50" viewBox="0 0 110 50">
+    <rect x="2" y="2" width="106" height="46" rx="4" fill="${cor}" stroke="#fff" stroke-width="2"/>
+    <rect x="6" y="6" width="98" height="38" rx="2" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+    <text x="55" y="31" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">${texto}</text>
+  </svg>`
+}
+function placaSentidoProibido(){
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="37" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+    <rect x="14" y="33" width="52" height="14" rx="2" fill="#fff"/>
+  </svg>`
+}
+function placaEstacionar(){
+  return `<svg class="placa" width="80" height="80" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="37" fill="#fff" stroke="#c0392b" stroke-width="5"/>
+    <line x1="18" y1="18" x2="62" y2="62" stroke="#c0392b" stroke-width="6"/>
+    <text x="40" y="48" font-family="Arial Black" font-size="26" font-weight="900" fill="#c0392b" text-anchor="middle">E</text>
+  </svg>`
+}
+function placaPedagio(){
+  return `<svg class="placa" width="110" height="50" viewBox="0 0 110 50">
+    <rect x="2" y="2" width="106" height="46" rx="4" fill="#1a4a8a" stroke="#fff" stroke-width="2"/>
+    <text x="55" y="31" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">PEDÁGIO</text>
+  </svg>`
+}
+
+// ─── QUESTIONS ────────────────────────────────────────────────────────────────
+const Q = [
+  // ── PLACAS DE REGULAMENTAÇÃO ──
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"expert",
+    sign: placaPare(),
+    tip:"Esta placa tem forma octogonal exclusiva no CTB.",
+    q:"O que o condutor deve fazer obrigatoriamente ao se deparar com esta placa?",
+    opts:["Reduzir a velocidade para 30 km/h e prosseguir","Parar completamente o veículo, independente de haver outros veículos","Apenas sinalizar com pisca-alerta e seguir","Dar preferência somente a pedestres"],
+    ans:1, exp:"A placa PARE (R-1) exige parada total e completa. Não basta reduzir; o veículo deve imobilizar antes de avançar, verificando segurança em todas as direções.<span class='art-ref'>Art. 29-A CTB</span>" },
+
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"expert",
+    sign: placaPreferencia(),
+    tip:"Esta placa tem a forma de um losango invertido.",
+    q:"Esta placa obriga o condutor a:",
+    opts:["Parar completamente antes da interseção","Ceder passagem a veículos e pedestres da via a ser cruzada, podendo desacelerar gradualmente","Apenas reduzir para 20 km/h","Dar preferência somente a veículos maiores"],
+    ans:1, exp:"A placa R-2 (Dê a Preferência) não exige parada completa como o PARE, mas obriga ceder passagem a todos que trafegam pela via prioritária.<span class='art-ref'>Art. 29 CTB</span>" },
+
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"hard",
+    sign: placaVelocidade("60"),
+    tip:"Atenção: a tolerância de radares não elimina a infração.",
+    q:"Um condutor trafegando a 76 km/h onde esta placa está fixada comete qual infração?",
+    opts:["Nenhuma — a tolerância técnica dos radares é de 20%","Infração leve por exceder até 20% do limite","Infração grave por exceder entre 20% e 50% do limite","Infração gravíssima somente se ultrapassar 91 km/h"],
+    ans:2, exp:"76 km/h = 26,6% acima de 60 km/h. Exceder entre 20% e 50% do limite é infração GRAVE (5 pontos na CNH). A tolerância de radar não é franquia; é margem de erro técnico do equipamento.<span class='art-ref'>Art. 218, II CTB</span>" },
+
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"expert",
+    sign: placaProibidoPassar(),
+    tip:"Esta é uma das situações mais cobradas nos exames.",
+    q:"Esta placa indica proibição de ultrapassagem. O condutor que a descumpre comete infração:",
+    opts:["Leve","Média","Grave","Gravíssima"],
+    ans:3, exp:"Ultrapassar em local proibido por sinalização é infração GRAVÍSSIMA, com multa de R$ 293,47 e 7 pontos na CNH. O risco de acidentes frontais nessas condições é extremamente alto.<span class='art-ref'>Art. 201 CTB</span>" },
+
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"expert",
+    sign: placaSentidoProibido(),
+    tip:"Placa circular vermelha com faixa branca horizontal.",
+    q:"Esta placa indica:",
+    opts:["Proibição de estacionar","Proibição de entrada no sentido em que se está trafegando — contramão","Velocidade máxima zerada — via fechada","Faixa exclusiva de ônibus"],
+    ans:1, exp:"A placa R-4a (Sentido Proibido) proíbe a entrada de veículos no sentido indicado. Avançá-la é infração gravíssima e gera risco gravíssimo de colisão frontal.<span class='art-ref'>Art. 185 CTB</span>" },
+
+  { sec:"Placas de Regulamentação", cat:"Placas", dif:"hard",
+    sign: placaEstacionar(),
+    tip:"O 'E' cortado tem significado preciso no CTB.",
+    q:"Esta placa proíbe estacionar. A diferença entre ESTACIONAR e PARAR segundo o CTB é:",
+    opts:["São sinônimos — qualquer imobilização é proibida","Parar é imobilização breve para embarque/desembarque com condutor presente; estacionar é por tempo maior ou sem condutor","Parar é proibido apenas à noite","Só veículos de grande porte devem respeitar"],
+    ans:1, exp:"Parar = imobilização momentânea, condutor presente e pronto para mover. Estacionar = imobilização por prazo superior ou com condutor ausente. A placa R-6a proíbe apenas estacionar; paradas rápidas podem ser toleradas.<span class='art-ref'>Art. 181 CTB</span>" },
+
+  // ── PLACAS DE ADVERTÊNCIA ──
+  { sec:"Placas de Advertência", cat:"Placas", dif:"hard",
+    sign: placaAdvertencia("curva"),
+    tip:"Fundo amarelo, forma triangular — sempre alerta.",
+    q:"Esta placa de advertência de curva perigosa exige que o condutor:",
+    opts:["Pare completamente antes da curva","Reduza a velocidade antecipadamente e mantenha-se na faixa de rolamento","Utilize o farol alto durante toda a curva","Buzine ao entrar na curva"],
+    ans:1, exp:"Placas de advertência não regulamentam velocidade, mas alertam para o perigo. O condutor deve antecipar a redução de velocidade para manter controle na curva, respeitando o limite da via." },
+
+  { sec:"Placas de Advertência", cat:"Placas", dif:"expert",
+    sign: placaAdvertencia("obras"),
+    tip:"Placas de obras têm fundo laranja — não amarelo.",
+    q:"Uma placa de obras com fundo LARANJA indica:",
+    opts:["Situação permanente de perigo","Situação temporária de trânsito (obras, serviços)","Proibição permanente de circulação","Apenas informação turística"],
+    ans:1, exp:"O fundo laranja é exclusivo das sinalizações temporárias (obras, acidentes, eventos). Substituem pontualmente as placas normais e exigem atenção dobrada, pois o cenário pode mudar a qualquer momento." },
+
+  { sec:"Placas de Advertência", cat:"Placas", dif:"hard",
+    sign: placaAdvertencia("ped"),
+    tip:"Triângulo com símbolo de pedestre — comum em SC.",
+    q:"Esta placa indica passagem de pedestres. Neste local, o condutor deve:",
+    opts:["Aumentar a velocidade para passar logo","Manter atenção redobrada e ceder passagem aos pedestres","Apenas ativar o pisca-alerta","Parar somente se houver semáforo"],
+    ans:1, exp:"A placa de advertência de travessia de pedestres indica área de cruzamento frequente. O condutor deve reduzir a velocidade e estar preparado para ceder passagem, mesmo sem faixa pintada." },
+
+  { sec:"Placas de Advertência", cat:"Placas", dif:"expert",
+    sign: placaAdvertencia("animal"),
+    tip:"Muito comum em rodovias do interior de SC.",
+    q:"Ao ver esta placa em rodovia, o condutor deve:",
+    opts:["Ignorar — apenas válida à noite","Reduzir a velocidade e acender o farol alto para ver animais na pista com mais antecedência","Buzinar continuamente para afugentar animais","Manter a velocidade pois os animais sempre cedem passagem"],
+    ans:1, exp:"A placa de trânsito de animais é especialmente relevante no interior de SC. Animais na pista causam acidentes graves. Reduzir a velocidade e usar farol alto (sem veículo em sentido contrário) é a conduta correta." },
+
+  // ── PLACAS OBRIGATÓRIAS (AZUIS) ──
+  { sec:"Placas de Obrigação", cat:"Placas", dif:"hard",
+    sign: placaObrigatorio("mao_unica"),
+    tip:"Placa circular azul com seta — obrigação de seguir.",
+    q:"Esta placa circular azul com seta para a direita indica:",
+    opts:["Sugestão de preferência de direção","Obrigação de seguir no sentido indicado — infração ir ao contrário","Apenas motocicletas devem usar","Pode-se seguir em qualquer direção"],
+    ans:1, exp:"Placas circulares azuis são de OBRIGAÇÃO. Seguir sentido contrário ao da seta é infração. São usadas para regular mão única e sentidos obrigatórios em vias." },
+
+  { sec:"Placas de Obrigação", cat:"Placas", dif:"expert",
+    sign: placaObrigatorio("ciclovia"),
+    tip:"Cada vez mais comum em cidades de SC.",
+    q:"Esta placa indica ciclovia obrigatória. Isso significa que:",
+    opts:["Ciclistas DEVEM usar a ciclovia quando ela existir e NÃO podem usar a pista de veículos","Ciclistas podem escolher entre ciclovia e pista","Apenas crianças devem usar a ciclovia","Ciclomotores também podem usar a ciclovia"],
+    ans:0, exp:"Onde há ciclovia ou ciclofaixa obrigatória, ciclistas DEVEM utilizá-la, não podendo circular na pista de rolamento. Ciclomotores e motocicletas NÃO podem usar ciclovias.<span class='art-ref'>Art. 58 CTB</span>" },
+
+  // ── MARCAS VIÁRIAS ──
+  { sec:"Marcas Viárias e Pavimento", cat:"Vias", dif:"expert",
+    q:"Uma linha contínua DUPLA no centro da pista indica:",
+    opts:["Ultrapassagem permitida com cautela","Ultrapassagem proibida para ambos os sentidos — risco extremo","Ultrapassagem permitida apenas para ônibus","Velocidade máxima reduzida"],
+    ans:1, exp:"Linha dupla contínua representa o mais alto grau de restrição: ultrapassagem e transposição são proibidas em AMBOS os sentidos. Geralmente usada em curvas ou lombas com visibilidade muito reduzida." },
+
+  { sec:"Marcas Viárias e Pavimento", cat:"Vias", dif:"hard",
+    q:"A linha tracejada (segmentada) no centro da pista indica:",
+    opts:["Proibição de ultrapassagem","Ultrapassagem permitida, desde que realizada com segurança","Área de pedestre","Faixa de redução de velocidade"],
+    ans:1, exp:"Linha tracejada = ultrapassagem PERMITIDA. O condutor ainda deve garantir visibilidade livre, velocidade adequada e sinalizar a manobra. A permissão não elimina a responsabilidade pela segurança." },
+
+  { sec:"Marcas Viárias e Pavimento", cat:"Vias", dif:"expert",
+    q:"A linha contínua do lado DIREITO da pista (bordo direito) indica ao ciclista ou motociclista que:",
+    opts:["Pode usar o acostamento livremente","Representa o limite da faixa de rodagem — o acostamento começa além dela","É área de estacionamento regulamentado","Delimita faixa exclusiva de ônibus"],
+    ans:1, exp:"A linha de bordo (longitudinal de bordo) delimita a pista de rolamento do acostamento. O acostamento é reservado para emergências e não para tráfego regular." },
+
+  { sec:"Marcas Viárias e Pavimento", cat:"Vias", dif:"hard",
+    q:"As setas pintadas no pavimento indicando sentido de circulação são:",
+    opts:["Apenas informativas e não obrigatórias","De cumprimento obrigatório — infração segui-las no sentido contrário","Válidas apenas em dias de chuva","Aplicáveis somente a veículos pesados"],
+    ans:1, exp:"Marcas viárias (sinalização horizontal) têm força regulamentadora. Setas de orientação de faixa indicam obrigatoriamente o sentido de circulação daquela faixa. Descumpri-las é infração." },
+
+  // ── TIPOS DE VIAS ──
+  { sec:"Tipos de Vias e Prioridades", cat:"Vias", dif:"expert",
+    q:"Em via com duas ou mais faixas de tráfego no mesmo sentido, a faixa da ESQUERDA é destinada a:",
+    opts:["Tráfego mais lento e caminhões","Ultrapassagem e veículos que se deslocam em velocidade superior","Exclusiva para motocicletas","Qualquer veículo em qualquer velocidade"],
+    ans:1, exp:"A faixa da esquerda é de ultrapassagem ou de veículos que trafegam mais rápido. Usar a faixa esquerda como faixa normal de tráfego lento é infração — o condutor lento deve permanecer à direita.<span class='art-ref'>Art. 29, II CTB</span>" },
+
+  { sec:"Tipos de Vias e Prioridades", cat:"Vias", dif:"expert",
+    q:"O acostamento de rodovia pode ser usado para:",
+    opts:["Tráfego regular em baixa velocidade","Ultrapassagem de veículos lentos","Parada de emergência e, em SC, ciclistas na ausência de ciclovia","Qualquer veículo em qualquer situação"],
+    ans:2, exp:"O acostamento é exclusivo para emergências. Em Santa Catarina e conforme o CTB, ciclistas podem utilizar o acostamento quando não houver ciclovia. Trafegar regularmente no acostamento é infração grave.<span class='art-ref'>Art. 193 CTB</span>" },
+
+  { sec:"Tipos de Vias e Prioridades", cat:"Vias", dif:"hard",
+    q:"Em rodovia de pista simples, o limite de velocidade mínimo para veículos de passeio é:",
+    opts:["Não há velocidade mínima estabelecida","30 km/h","40 km/h","50 km/h"],
+    ans:3, exp:"Em rodovias, a velocidade mínima é geralmente metade da máxima. Em pista simples com limite de 100 km/h, a mínima é 50 km/h. Trafegar abaixo disso obstrui o trânsito e é infração.<span class='art-ref'>Art. 61 §1° CTB</span>" },
+
+  { sec:"Tipos de Vias e Prioridades", cat:"Vias", dif:"expert",
+    q:"Em via urbana sem sinalização de velocidade, qual a hierarquia correta de preferência em cruzamento?",
+    opts:["Veículo maior tem preferência","Veículo que vem da direita tem preferência sobre o que vem da esquerda","Quem chegar primeiro tem preferência absoluta","Ônibus sempre têm preferência"],
+    ans:1, exp:"Regra fundamental do CTB: em cruzamento sem sinalização, tem preferência o veículo que vem pela DIREITA. É a regra de ouro do cruzamento e extremamente cobrada no exame.<span class='art-ref'>Art. 29, III 'b' CTB</span>" },
+
+  // ── FAIXAS ESPECIAIS ──
+  { sec:"Faixas e Situações Especiais", cat:"Vias", dif:"expert",
+    q:"Faixa exclusiva de ônibus indicada por marcação no pavimento: um veículo de passeio pode usar quando:",
+    opts:["Em qualquer horário se a faixa estiver vazia","Nunca — é exclusiva para ônibus e outros veículos autorizados","Apenas nos fins de semana","Para fazer conversão à direita imediata"],
+    ans:1, exp:"Faixas exclusivas de ônibus (e outros veículos autorizados por placa) são proibidas para veículos de passeio em qualquer situação. Usar faixa exclusiva é infração grave.<span class='art-ref'>Art. 182, VIII CTB</span>" },
+
+  { sec:"Faixas e Situações Especiais", cat:"Vias", dif:"hard",
+    sign: placaIndicacao("ÔNIBUS","#1a6e3a"),
+    q:"Esta placa verde indica um ponto de parada de ônibus. O condutor de veículo de passeio deve:",
+    opts:["Estacionar ali brevemente se o ponto estiver vazio","Nunca estacionar ou parar neste local, mantendo a área livre","Usar o local apenas para embarque de passageiros","Parar apenas em caso de emergência"],
+    ans:1, exp:"Pontos de parada de ônibus não podem ser ocupados por outros veículos em nenhuma hipótese. Parar ou estacionar nestes locais impede a operação do transporte público e é infração.<span class='art-ref'>Art. 181, VIII CTB</span>" },
+
+  // ── SEMÁFORO AVANÇADO ──
+  { sec:"Semáforos e Sinalização Luminosa", cat:"Sinalização", dif:"expert",
+    q:"A hierarquia da sinalização de trânsito do mais prevalente para o menos prevalente é:",
+    opts:["Placas > Semáforo > Agente > Marcas no chão","Agente de trânsito > Semáforo > Placas verticais > Marcas viárias","Marcas no chão > Placas > Semáforo > Agente","Semáforo > Agente > Placas > Marcas"],
+    ans:1, exp:"A hierarquia oficial é: 1° Agente de Trânsito (prevalece sobre tudo), 2° Sinalização semafórica, 3° Sinalização vertical (placas), 4° Sinalização horizontal (marcas no chão). O agente pode até contrariar o semáforo.<span class='art-ref'>Art. 88 CTB</span>" },
+
+  { sec:"Semáforos e Sinalização Luminosa", cat:"Sinalização", dif:"expert",
+    q:"Semáforo com luz VERMELHA piscante no cruzamento indica:",
+    opts:["Via bloqueada — proibido avançar mesmo com visibilidade livre","Atenção máxima — equivale ao PARE: pare, verifique e siga com segurança","Apenas reduzir a velocidade para 20 km/h","Situação de emergência policial"],
+    ans:1, exp:"Vermelho piscante = equivale ao sinal PARE: o condutor deve parar completamente, verificar se há trânsito em todas as direções e só então avançar com cautela. Diferente do amarelo piscante (atenção/preferência)." },
+
+  { sec:"Semáforos e Sinalização Luminosa", cat:"Sinalização", dif:"hard",
+    q:"Semáforo com luz AMARELA piscante (e não fixa) indica:",
+    opts:["Pare completamente — equivale ao vermelho","Atenção redobrada: reduza velocidade e observe as regras de preferência da via","Pode avançar livremente como se verde","Somente ambulâncias podem passar"],
+    ans:1, exp:"Amarelo piscante = ATENÇÃO / Dê a Preferência. O condutor reduz a velocidade e cede passagem conforme as regras da via. Não é parada obrigatória como o vermelho piscante, mas exige cautela total." },
+
+  // ── ÁLCOOL E CRIMES ──
+  { sec:"Álcool, Drogas e Crimes de Trânsito", cat:"Legislação", dif:"expert",
+    q:"O condutor que se recusa a fazer o teste do bafômetro quando solicitado por autoridade de trânsito sofre:",
+    opts:["Apenas advertência verbal por não ser obrigatório","Infração gravíssima: multa de R$ 2.934,70, suspensão de 12 meses da CNH e retenção do veículo","Apenas pagamento de multa leve","Pode recusar sem penalidade — é direito constitucional"],
+    ans:1, exp:"A recusa ao bafômetro foi equiparada à infração de embriaguez pela Lei Seca. Gera multa de R$ 2.934,70 (10x a gravíssima), 7 pontos, suspensão de 12 meses e retenção do veículo para regularização.<span class='art-ref'>Art. 165-A CTB</span>" },
+
+  { sec:"Álcool, Drogas e Crimes de Trânsito", cat:"Legislação", dif:"expert",
+    q:"Participar de racha (disputa de velocidade) é tipificado como:",
+    opts:["Apenas infração gravíssima administrativa","Crime de trânsito com pena de detenção de 6 meses a 3 anos, com apreensão do veículo","Infração grave com suspensão imediata da CNH por 30 dias","Crime hediondo"],
+    ans:1, exp:"Racha é crime de trânsito (Art. 308 CTB): detenção de 6 meses a 3 anos, suspensão ou proibição de obter CNH e apreensão do veículo. Se houver vítima, a pena é aumentada consideravelmente.<span class='art-ref'>Art. 308 CTB</span>" },
+
+  // ── MULTAS E PONTOS ──
+  { sec:"Multas, Pontos e Suspensão", cat:"Legislação", dif:"expert",
+    q:"O condutor com CNH definitiva que NÃO cometeu infração gravíssima nos últimos 12 meses tem a habilitação suspensa ao acumular:",
+    opts:["15 pontos","20 pontos","30 pontos","40 pontos"],
+    ans:2, exp:"Sem infrações gravíssimas no período, o limite é 30 pontos antes da suspensão. Caso tenha cometido infração gravíssima, o limite cai para 20 pontos. A suspensão varia de 6 meses a 1 ano.<span class='art-ref'>Art. 261 CTB</span>" },
+
+  { sec:"Multas, Pontos e Suspensão", cat:"Legislação", dif:"hard",
+    q:"Após a CASSAÇÃO da CNH (não a suspensão), o condutor pode requerer nova habilitação após:",
+    opts:["6 meses","1 ano","2 anos","5 anos"],
+    ans:2, exp:"Cassação é mais grave que suspensão. Após 2 anos do prazo da cassação, o condutor pode requerer nova habilitação, mas precisa refazer TODO o processo: exames médicos, psicológicos, teórico e prático.<span class='art-ref'>Art. 263 CTB</span>" },
+
+  { sec:"Multas, Pontos e Suspensão", cat:"Legislação", dif:"expert",
+    q:"Dirigir com CNH vencida há mais de 30 dias é infração:",
+    opts:["Leve","Média","Grave","Gravíssima"],
+    ans:2, exp:"Conduzir veículo com CNH vencida há mais de 30 dias é infração GRAVE (Art. 162, V CTB), gerando 5 pontos na CNH do novo processo de renovação, além de multa e retenção do veículo.<span class='art-ref'>Art. 162, V CTB</span>" },
+
+  // ── SITUAÇÕES ESPECÍFICAS SC ──
+  { sec:"Situações Específicas — Rodovias SC", cat:"Vias", dif:"expert",
+    q:"Em rodovias de Santa Catarina sob chuva ou neblina, o farol de neblina dianteiro (milha) pode ser usado:",
+    opts:["A qualquer momento para melhorar a visibilidade","Apenas quando a visibilidade estiver comprometida pela chuva, neblina ou fumaça","Somente à noite em combinação com o farol alto","Nunca em vias urbanas — apenas em rodovias"],
+    ans:1, exp:"O farol de neblina é para condições específicas de baixa visibilidade. Usá-lo em condições normais é inadequado e pode ofuscar outros condutores. Em SC, frequente em serras como a Serra Geral e Catarinense.<span class='art-ref'>Art. 40, IV CTB</span>" },
+
+  { sec:"Situações Específicas — Rodovias SC", cat:"Vias", dif:"hard",
+    q:"Trafegando em rodovia de pista dupla em SC, você ouve sirene de ambulância vindo atrás. A ação correta é:",
+    opts:["Acelerar para criar espaço à frente","Mover o veículo para a DIREITA da faixa (ou parar se necessário) para liberar passagem","Apenas ativar o pisca-alerta e manter velocidade","Passar para a faixa da esquerda"],
+    ans:1, exp:"Ao ouvir sirene de emergência, o condutor deve deslocar-se para a direita e parar se necessário. Criar um corredor pela DIREITA é a conduta correta em pistas duplas. Nos EUA e Europa se usa o corredor central — mas no Brasil o padrão é à direita.<span class='art-ref'>Art. 29, VIII CTB</span>" },
+
+  // ── ULTRAPASSAGEM AVANÇADA ──
+  { sec:"Ultrapassagem Avançada", cat:"Vias", dif:"expert",
+    q:"É PROIBIDO ultrapassar em qual destas situações?",
+    opts:["Reta com boa visibilidade e linha tracejada","Próximo a pontes, viadutos, túneis e em curvas com visibilidade reduzida","Via com duas faixas no mesmo sentido","Quando o veículo à frente está acima de 40 km/h"],
+    ans:1, exp:"Proibido ultrapassar em: pontes, viadutos, túneis, cruzamentos, curvas, lombas, aclives com pouca visibilidade e onde houver sinalização de proibição. A visibilidade reduzida é o critério principal.<span class='art-ref'>Art. 200 CTB</span>" },
+
+  { sec:"Ultrapassagem Avançada", cat:"Vias", dif:"hard",
+    q:"Ao ser ultrapassado em rodovia, o condutor do veículo ultrapassado deve:",
+    opts:["Acelerar para dificultar a manobra por segurança","Manter ou reduzir levemente a velocidade e mover-se para a direita se possível","Frear bruscamente para o ultrapassante sair da faixa mais rápido","Piscar os faróis em sinal de alerta"],
+    ans:1, exp:"O veículo sendo ultrapassado JAMAIS deve acelerar. Deve facilitar a manobra: reduzir ou manter a velocidade e deslocar-se à direita. Dificultar ultrapassagem é infração.<span class='art-ref'>Art. 29 §1°, II CTB</span>" },
+
+  // ── PEDESTRE E CICLISTA ──
+  { sec:"Pedestres e Ciclistas", cat:"Legislação", dif:"expert",
+    q:"A distância lateral mínima que um veículo deve manter ao ultrapassar um ciclista é:",
+    opts:["50 centímetros","1 metro","1,5 metros","2 metros"],
+    ans:2, exp:"O CTB determina distância mínima de 1,5 metro ao ultrapassar ciclistas. A velocidade também deve ser reduzida. Descumprir esta regra é infração grave, especialmente em SC onde o ciclismo é crescente.<span class='art-ref'>Art. 58, §1° CTB</span>" },
+
+  { sec:"Pedestres e Ciclistas", cat:"Legislação", dif:"hard",
+    q:"O pedestre que acaba de desembarcar de ônibus coletivo e precisa atravessar a pista:",
+    opts:["Não tem prioridade — deve esperar o sinal","Tem prioridade de passagem; veículos devem parar","Só tem prioridade se houver faixa de pedestre próxima","Deve correr para não atrapalhar o trânsito"],
+    ans:1, exp:"O CTB garante prioridade ao pedestre que acabou de desembarcar de coletivo e precisa cruzar para a calçada, mesmo sem faixa. Os veículos devem parar para sua travessia segura.<span class='art-ref'>Art. 70, III CTB</span>" },
+
+  // ── DOCUMENTOS ──
+  { sec:"Documentos e Responsabilidades", cat:"Legislação", dif:"hard",
+    q:"O proprietário do veículo recebe a notificação de infração por radar. Ele não estava dirigindo. Deve:",
+    opts:["Ignorar — a multa é de quem dirigia","Indicar o real infrator no prazo estipulado ou arcar com a penalidade como proprietário","Pagar a multa mas não recebe pontos","Contestar e ficará isento automaticamente"],
+    ans:1, exp:"O proprietário tem obrigação de indicar o condutor infrator no prazo (geralmente 30 dias). Se não indicar, responde como infrator e recebe os pontos. A não indicação é infração gravíssima.<span class='art-ref'>Art. 257, §7° CTB</span>" },
+
+  { sec:"Documentos e Responsabilidades", cat:"Legislação", dif:"expert",
+    q:"O SEGURO DPVAT (atual SPVAT) cobre:",
+    opts:["Danos materiais a terceiros e ao próprio veículo","Exclusivamente danos pessoais: morte, invalidez e despesas médicas de vítimas de acidentes","Roubo, furto e colisões","Qualquer dano causado pelo veículo"],
+    ans:1, exp:"O SPVAT cobre APENAS danos pessoais: R$ 13.500 por morte, até R$ 13.500 por invalidez permanente e até R$ 2.700 por despesas médico-hospitalares. NÃO cobre danos materiais. Para danos materiais existe o seguro facultativo." },
+
+  // ── CONDIÇÕES ADVERSAS ──
+  { sec:"Condições Adversas de Pista", cat:"Vias", dif:"expert",
+    q:"Em caso de aquaplanagem (pneus perdem contato com o asfalto por água), a ação correta é:",
+    opts:["Frear com força total imediatamente","Girar o volante bruscamente para um lado","Tirar o pé do acelerador suavemente e manter o volante firme sem frear bruscamente","Aumentar a velocidade para sair da água mais rápido"],
+    ans:2, exp:"Na aquaplanagem: 1) tire suavemente o pé do acelerador, 2) segure firme o volante em linha reta, 3) NÃO freie bruscamente. Aguarde os pneus retomarem contato. Frear ou esterçar violentamente causa perda total do controle." },
+
+  { sec:"Condições Adversas de Pista", cat:"Vias", dif:"hard",
+    q:"Em pista molhada, comparado à pista seca, a distância de frenagem de um veículo:",
+    opts:["Permanece igual se os freios forem bons","Aumenta em cerca de 10%","Pode dobrar ou mais, dependendo da velocidade e condição dos pneus","Reduz pois os pneus aderem mais"],
+    ans:2, exp:"Em pista molhada a distância de frenagem pode mais que dobrar. A água reduz drasticamente o atrito. Com pneus desgastados ou em alta velocidade, o risco de aquaplanagem e perda de controle é extremo." },
+
+  // ── HABILITAÇÃO ──
+  { sec:"Habilitação e CNH", cat:"Legislação", dif:"expert",
+    q:"A CNH categoria 'E' habilita o condutor a:",
+    opts:["Apenas caminhões pesados sem reboque","Veículos das categorias B, C e D e combinações de veículos (tração + reboque/semirreboque)","Tratores e máquinas agrícolas","Somente veículos de passeio com carretinha"],
+    ans:1, exp:"Categoria E é a mais abrangente: habilita para combinações de veículos (caminhão + reboque, bitrem, rodotrem), além de englobar todas as categorias inferiores (A, B, C, D). Exige experiência prévia na categoria C ou D.<span class='art-ref'>Art. 143 CTB</span>" },
+
+  { sec:"Habilitação e CNH", cat:"Legislação", dif:"hard",
+    q:"O motorista profissional (caminhoneiro) deve fazer pausa de no mínimo 30 minutos após quantas horas contínuas de direção?",
+    opts:["3 horas","4 horas","5 horas","6 horas"],
+    ans:1, exp:"A Lei 13.103/2015 (Lei do Motorista) exige pausa de 30 min a cada 4 horas contínuas de condução. A jornada máxima é de 8 horas/dia (podendo ser 10 horas com horas extras). Descumprir é crime.<span class='art-ref'>Lei 13.103/2015</span>" },
+
+  // ── PRIMEIROS SOCORROS ──
+  { sec:"Primeiros Socorros", cat:"Legislação", dif:"expert",
+    q:"Motorista causa acidente com vítima e foge do local para evitar responsabilidade. Comete:",
+    opts:["Apenas infração administrativa de saída de local de acidente","Crime de trânsito: detenção de 6 meses a 1 ano ou multa (Art. 305) + omissão de socorro se não prestou ajuda","Apenas infração gravíssima sem crime","Não é crime se ninguém o identificou"],
+    ans:1, exp:"Fugir do local de acidente é crime (Art. 305, detenção 6m-1a). Se não prestou socorro à vítima, soma-se a omissão de socorro (Art. 304, detenção 6m-1a agravada). Os dois crimes podem ser imputados simultaneamente.<span class='art-ref'>Arts. 304 e 305 CTB</span>" },
+
+  // ── QUESTÃO DIFÍCIL DE VIA ──
+  { sec:"Situação Prática em Via", cat:"Vias", dif:"expert",
+    q:"Você está em via de mão única com 3 faixas. Qual é a conduta INCORRETA?",
+    opts:["Usar a faixa da esquerda para ultrapassagem","Trafegar na faixa do meio em velocidade regular","Usar a faixa da esquerda como faixa normal de cruzeiro em velocidade baixa, atrapalhando quem quer ultrapassar","Mudar de faixa com sinalização prévia de seta"],
+    ans:2, exp:"Em vias de múltiplas faixas, a faixa da esquerda é destinada a ultrapassagem ou veículos mais velozes. Trafegar lentamente na faixa esquerda é infração (Art. 29, II) pois obstrui veículos mais rápidos.<span class='art-ref'>Art. 29, II CTB</span>" },
+
+  { sec:"Situação Prática em Via", cat:"Vias", dif:"expert",
+    sign: placaVelocidade("80"),
+    q:"Placa de 80 km/h em rodovia. Você trafega a 75 km/h pela faixa da direita, mas o veículo atrás quer ultrapassar. Você deve:",
+    opts:["Acelerar para não ser ultrapassado","Manter 75 km/h sem mudar de faixa — o veículo atrás é quem deve ultrapassar pela esquerda","Mover-se para o acostamento para facilitar a ultrapassagem","Frear bruscamente para o veículo atrás perceber"],
+    ans:1, exp:"Você está dentro do limite e na faixa correta. Quem quer ultrapassar deve usar a faixa da esquerda. Nunca force o veículo atrás a frear bruscamente, nem use o acostamento como alternativa à ultrapassagem." },
+];
+
+const L=['A','B','C','D'];
+let answered=new Array(Q.length).fill(null);
+
+function updateStats(){
+  const done=answered.filter(a=>a!==null).length;
+  const ok=answered.filter((a,i)=>a!==null&&a===Q[i].ans).length;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-ok').textContent=ok;
+  document.getElementById('s-err').textContent=done-ok;
+  const p=Math.round(done/Q.length*100);
+  document.getElementById('prog-bar').style.width=p+'%';
+  document.getElementById('prog-pct').textContent=p+'%';
+}
+
+const secs=[
+  "Placas de Regulamentação","Placas de Advertência","Placas de Obrigação",
+  "Marcas Viárias e Pavimento","Tipos de Vias e Prioridades","Faixas e Situações Especiais",
+  "Semáforos e Sinalização Luminosa","Álcool, Drogas e Crimes de Trânsito",
+  "Multas, Pontos e Suspensão","Situações Específicas — Rodovias SC",
+  "Ultrapassagem Avançada","Pedestres e Ciclistas","Documentos e Responsabilidades",
+  "Condições Adversas de Pista","Habilitação e CNH","Primeiros Socorros","Situação Prática em Via"
+];
+const secIcons={"Placas de Regulamentação":"🔴","Placas de Advertência":"⚠️","Placas de Obrigação":"🔵","Marcas Viárias e Pavimento":"🛣️","Tipos de Vias e Prioridades":"🚦","Faixas e Situações Especiais":"↔️","Semáforos e Sinalização Luminosa":"🚥","Álcool, Drogas e Crimes de Trânsito":"⚖️","Multas, Pontos e Suspensão":"📋","Situações Específicas — Rodovias SC":"🌄","Ultrapassagem Avançada":"↔️","Pedestres e Ciclistas":"🚶","Documentos e Responsabilidades":"📄","Condições Adversas de Pista":"🌧️","Habilitação e CNH":"🪪","Primeiros Socorros":"🚑","Situação Prática em Via":"🚗"};
+
+function render(){
+  const main=document.getElementById('main');
+  let html='';
+
+  secs.forEach(sec=>{
+    const qs=Q.map((q,i)=>({...q,gi:i})).filter(q=>q.sec===sec);
+    if(!qs.length) return;
+    html+=`<div class="section-head"><div class="line"></div><div class="title">${secIcons[sec]||''} ${sec}</div><div class="line"></div></div>`;
+    qs.forEach(q=>{
+      const qi=q.gi, sel=answered[qi], isAns=sel!==null, isOk=isAns&&sel===q.ans;
+      const bodyContent = q.sign
+        ? `<div class="q-sign-area"><div class="q-sign">${q.sign}</div><div class="q-text-wrap"><div class="q-text">${q.q}</div></div></div>`
+        : `<div class="q-text">${q.q}</div>`;
+
+      html+=`<div class="qcard ${isAns?(isOk?'ok':'err'):''}" id="qcard-${qi}">
+        <div class="qcard-top">
+          <div class="qcard-accent"></div>
+          <div class="qcard-body">
+            <div class="q-meta">
+              <span class="q-num">Q${qi+1}/${Q.length}</span>
+              <span class="q-cat">${q.cat}</span>
+              <span class="q-dif ${q.dif}">${q.dif==='expert'?'🔴 Expert':'🟡 Difícil'}</span>
+              <span class="q-status" style="margin-left:auto">${isAns?(isOk?'✅':'❌'):'○'}</span>
+            </div>
+            ${q.tip?`<div class="q-tip">⚠ ${q.tip}</div>`:''}
+            ${bodyContent}
+            <div class="options">`;
+      q.opts.forEach((opt,oi)=>{
+        let cls='opt';
+        if(isAns){
+          if(oi===q.ans) cls+=' correct';
+          else if(oi===sel) cls+=' wrong';
+          else cls+=' dim';
+        }
+        html+=`<button class="${cls}" ${isAns?'disabled':''} onclick="choose(${qi},${oi})">
+          <span class="opt-letter">${L[oi]}</span>
+          <span>${opt}</span>
+        </button>`;
+      });
+      html+=`</div>`;
+      if(isAns){
+        html+=`<div class="feedback ${isOk?'ok':'err'}">
+          <span class="fi">${isOk?'✔':'✘'}</span>
+          <span>${isOk?'<strong>Correto!</strong> ':`<strong>Incorreto.</strong> Gabarito: <strong>${L[q.ans]}) ${q.opts[q.ans]}</strong>. `}${q.exp}</span>
+        </div>`;
+      }
+      html+=`</div></div></div>`;
+    });
+  });
+
+  const done=answered.filter(a=>a!==null).length;
+  if(done===Q.length){
+    const ok=answered.filter((a,i)=>a===Q[i].ans).length;
+    const pct=Math.round(ok/Q.length*100), approved=pct>=70;
+    const msg=pct>=90?'Excepcional! Você domina completamente o CTB. Pode ir confiante ao exame.':
+              pct>=70?'Aprovado! Revise os pontos errados antes do exame real — a banca cobra detalhes.':
+              pct>=50?'Quase lá! Estude especialmente as seções de placas e vias que errou.':
+              'Recomende aprofundar o estudo do CTB e das sinalizações. Você consegue!';
+    html+=`<div class="final">
+      <div class="final-pct">${pct}%</div>
+      <div class="final-sub">de aproveitamento — ${ok} de ${Q.length} questões corretas</div>
+      <div class="final-verdict ${approved?'ok':'err'}">${approved?'✅ APROVADO NO SIMULADO':'❌ REPROVADO NO SIMULADO'}</div>
+      <div class="final-stats">
+        <div class="fs ok"><div class="n">${ok}</div><div class="l">Acertos</div></div>
+        <div class="fs err"><div class="n">${Q.length-ok}</div><div class="l">Erros</div></div>
+        <div class="fs gold"><div class="n">${Q.length}</div><div class="l">Total</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:.75rem">Nota mínima para aprovação no DETRAN-SC: 70%</p>
+      <p class="final-msg">${msg}</p>
+      <button class="btn-restart" onclick="restart()">↺ REFAZER SIMULADO</button>
+    </div>`;
+  }
+
+  main.innerHTML=html;
+  updateStats();
+}
+
+function choose(qi,oi){
+  if(answered[qi]!==null) return;
+  answered[qi]=oi;
+  const card=document.getElementById('qcard-'+qi);
+  const q=Q[qi], isOk=oi===q.ans;
+  card.classList.add(isOk?'ok':'err');
+  card.querySelector('.q-status').textContent=isOk?'✅':'❌';
+  card.querySelector('.qcard-accent').style.background=isOk?'var(--green-l)':'var(--red)';
+  card.querySelectorAll('.opt').forEach((b,boi)=>{
+    b.disabled=true;
+    if(boi===q.ans) b.classList.add('correct');
+    else if(boi===oi) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  const fb=document.createElement('div');
+  fb.className=`feedback ${isOk?'ok':'err'}`;
+  fb.innerHTML=`<span class="fi">${isOk?'✔':'✘'}</span>
+    <span>${isOk?'<strong>Correto!</strong> ':`<strong>Incorreto.</strong> Gabarito: <strong>${L[q.ans]}) ${q.opts[q.ans]}</strong>. `}${q.exp}</span>`;
+  card.querySelector('.qcard-body').appendChild(fb);
+  fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+  updateStats();
+  if(answered.filter(a=>a!==null).length===Q.length) setTimeout(()=>render(),500);
+}
+
+function restart(){
+  answered=new Array(Q.length).fill(null);
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>
