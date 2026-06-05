@@ -1,0 +1,3 @@
+.destaque { background: yellow; font-weight: bold; }
+.oculto   { display: none; }
+.erro     { background: red; color: white; padding: 8px; }
