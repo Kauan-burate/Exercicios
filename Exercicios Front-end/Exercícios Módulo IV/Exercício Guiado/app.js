@@ -61,7 +61,80 @@ btnAumentarJs.addEventListener('click', () => {
 });
 
 
+const btnEditarNome        = document.querySelector('#btn-editar-nome');
+const formEdicao           = document.querySelector('#form-edicao');
+const inputNome            = document.querySelector('#input-nome');
+const inputProfissao       = document.querySelector('#input-profissao');
+const nomeUsuario          = document.querySelector('#nome-usuario');
+const profissaoUsuario     = document.querySelector('#profissao-usuario');
 
+btnEditarNome.addEventListener('click', () => {
+    formEdicao.style.display = 'block';
+
+    inputNome.value = nomeUsuario.textContent;
+    inputProfissao.value = profissaoUsuario.textContent;
+
+
+});
+
+const btnSalvar     = document.querySelector('#btn-salvar');
+const btnCancelar   = document.querySelector('#btn-cancelar');
+
+btnSalvar.addEventListener('click', () => {
+    const novoNome          = inputNome.value.trim();
+    const novaProfissao     = inputProfissao.value.trim();
+
+    if(novoNome == ''){
+        alert('Tongão!, O nome não pode estar vazio! Boca berta!');
+        return;
+    }
+
+    nomeUsuario.textContent = novoNome;
+    profissaoUsuario.textContent = novaProfissao || 'Sem porfissão';
+
+    formEdicao.style.display = 'none';
+});
+
+
+btnCancelar.addEventListener('click', () =>{
+    formEdicao.style.display = 'none';
+
+});
+
+/*Trocar foto de perfil*/
+const btnTrocarFoto = document.querySelector('#btn-trocar-foto');
+const fotoOpcoes    = document.querySelector('#foto-opcoes');
+const fotoPerfil    = document.querySelector('#foto-perfil');
+
+btnTrocarFoto.addEventListener('click', () => {
+    if(fotoOpcoes.style.display === 'block'){
+        fotoOpcoes.style.display = 'none';
+    } else{
+        fotoOpcoes.style.display = 'block';
+        formEdicao.style.display = 'none';
+    }
+
+});
+
+const todasFotos = document.querySelectorAll('.foto-opcao');
+
+todasFotos.forEach(opcao => {
+    opcao.addEventListener('click', () => {
+        // <img dat-seed="Felix"> -> opcao.dataset.seed === "felix"
+        const seed = opcao.dataset.seed;
+        
+        fotoPerfil.src = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
+
+        todasFotos.forEach(f => f.classList.remove('selecionada'));
+        opcao.classList.add('selecionada');
+
+        fotoOpcoes.style.display = 'none';
+
+        console.log('Avatar trocado para:', seed);
+
+    });
+
+});
 
 
 
