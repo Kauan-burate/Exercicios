@@ -1,12 +1,15 @@
+
 const caixa = document.querySelector("#caixa");
 
-caixa.addEventListener('mouseover', (e) => {
-    const cor = e.target.dataset.cor;
-    caixa.style.background = cor;
-    console.log(`TA FUNCIONANDO`);
+caixa.addEventListener('mouseover', () => {
+    caixa.style.background = "blue";
+    caixa.textContent = "Mouse dentro!";
+
 });
 
-caixa.addEventListener('mouseout', (e) =>{
+caixa.addEventListener('mouseout', () =>{
 
-    console.log(`TA FORA`);
-});
+    caixa.style.background = "#eee";
+    caixa.textContent = "Passe o mouse aqui";
+
+}); 
