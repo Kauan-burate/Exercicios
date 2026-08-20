@@ -14,7 +14,7 @@ function criarCliente(){
         host:     'localhost',
         port:     5432,
         user:     'postgres',
-        password: 'root',
+        password: '150783',
         database: 'cardapio_db'
     });
 }
