@@ -21,50 +21,87 @@ function criarCliente(){
 
 app.get('/api/pratos', async (req, res) => {
     const client = criarCliente();
+
     try {
+        const { categoria } = req.query;
+
         await client.connect();
 
-        const resultado = await client.query(`
-            SELECT p.nome AS NomePrato,
-            p.descricao AS Descricao, 
-            c.nome AS Categoria, 
-            p.preco AS Preco 
-            FROM pratos p 
-            INNER JOIN categorias c ON p.categoria_id = c.id`);
+        let resultado;
+
+        if (categoria) {
+            resultado = await client.query(`
+                SELECT
+                    p.id,
+                    p.nome,
+                    p.descricao,
+                    p.preco,
+                    p.disponivel,
+                    c.nome AS categoria
+                FROM pratos p
+                INNER JOIN categorias c
+                    ON p.categoria_id = c.id
+                WHERE p.categoria_id = $1
+                ORDER BY p.nome
+            `, [categoria]);
+        } else {
+            resultado = await client.query(`
+                SELECT
+                    p.id,
+                    p.nome,
+                    p.descricao,
+                    p.preco,
+                    p.disponivel,
+                    c.nome AS categoria
+                FROM pratos p
+                INNER JOIN categorias c
+                    ON p.categoria_id = c.id
+                ORDER BY p.nome
+            `);
+        }
 
         res.status(200).json(resultado.rows);
 
     } catch (e) {
-        res.status(400).json({Erro: e.message});
-    } finally{
+        res.status(500).json({ erro: e.message });
+    } finally {
         await client.end();
     }
-
 });
 
 app.get('/api/pratos/:id', async (req, res) => {
     const client = criarCliente();
+
     try {
         await client.connect();
 
         const resultado = await client.query(`
-            SELECT p.id, 
-            p.nome AS NomePrato, 
-            p.descricao AS Descricao, 
-            c.nome AS Categoria, 
-            p.preco AS Preco 
-            FROM pratos p 
-            INNER JOIN categorias c 
-            ON p.categoria_id = c.id WHERE p.id = $1`, [req.params.id]);
+            SELECT
+                p.id,
+                p.nome,
+                p.descricao,
+                p.preco,
+                p.disponivel,
+                c.nome AS categoria
+            FROM pratos p
+            INNER JOIN categorias c
+                ON p.categoria_id = c.id
+            WHERE p.id = $1
+        `, [req.params.id]);
 
-        res.status(200).json(resultado.rows);
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({
+                erro: 'Prato não encontrado.'
+            });
+        }
+
+        res.status(200).json(resultado.rows[0]);
 
     } catch (e) {
-        res.status(400).json({Erro: e.message});
-    } finally{
+        res.status(500).json({ erro: e.message });
+    } finally {
         await client.end();
     }
-
 });
 
 app.get('/api/categorias', async (req, res) => {

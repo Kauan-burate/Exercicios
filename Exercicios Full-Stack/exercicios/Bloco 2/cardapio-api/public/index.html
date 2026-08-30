@@ -1,63 +1,164 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Cadastrar Prato — Cardápio</title>
-  <style>
-    body { font-family: sans-serif; max-width: 400px; margin: 20px auto; padding: 0 10px; }
-    .campo { margin-bottom: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; }
-    input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { background: #28a745; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; font-size: 16px; }
-    button:hover { background: #218838; }
-    #mensagem { margin-top: 15px; padding: 10px; display: none; border-radius: 4px; }
-    .sucesso { background: #d4edda; color: #155724; }
-    .erro { background: #f8d7da; color: #721c24; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cardápio</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+            padding: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            background: #333;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+
+        .filtro {
+            margin-bottom: 30px;
+        }
+
+        .filtro label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            min-width: 200px;
+        }
+
+        #listaPratos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .descricao {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .categoria {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .preco {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .disponivel {
+            background: green;
+        }
+
+        .indisponivel {
+            background: red;
+        }
+
+        .remover {
+            display: block;
+            width: 100%;
+            border: none;
+            background: #d32f2f;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .remover:hover {
+            background: #b71c1c;
+        }
+
+        .mensagem {
+            text-align: center;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
-  <h2>Novo Prato</h2>
+    <header>
+        <h1>🍽️ Cardápio</h1>
 
-  <!-- Formulário de cadastro -->
-  <form id="formPrato">
-    <div class="campo">
-      <label for="nome">Nome do Prato *</label>
-      <input type="text" id="nome" required placeholder="Ex: Lasanha">
+        <a href="/cadastro.html">
+            Cadastrar prato
+        </a>
+    </header>
+
+    <div class="filtro">
+
+        <label for="categoria">
+            Filtrar por categoria:
+        </label>
+
+        <select id="categoria">
+            <option value="">Todas as categorias</option>
+        </select>
+
     </div>
 
-    <div class="campo">
-      <label for="descricao">Descrição</label>
-      <textarea id="descricao" placeholder="Ex: Molho bolonhesa e queijo"></textarea>
-    </div>
+    <main id="listaPratos"></main>
 
-    <div class="campo">
-      <label for="preco">Preço (R$) *</label>
-      <input type="number" id="preco" step="0.01" required placeholder="Ex: 45.90">
-    </div>
+    <p id="mensagem" class="mensagem"></p>
 
-    <div class="campo">
-      <label for="categoria">Categoria *</label>
-      <select id="categoria" required>
-        <option value="1">Entrada</option>
-        <option value="2">Pratos Principais</option>
-        <option value="3">Sobremesas</option>
-        <option value="4">Bebidas</option>
-      </select>
-    </div>
-
-    <div class="campo">
-      <label for="disponivel">Disponível no Cardápio?</label>
-      <select id="disponivel">
-        <option value="true">Sim</option>
-        <option value="false">Não</option>
-      </select>
-    </div>
-
-    <button type="submit">Cadastrar no Banco</button>
-  </form>
-
-    <script src="./js/lista.js"></script>
+    <script src="/js/lista.js"></script>
 
 </body>
+
 </html>
+
