@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas - Clínica</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        nav {
+            background-color: #2563eb;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            color: white;
+            font-size: 24px;
+        }
+
+        nav div {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topo h2 {
+            font-size: 28px;
+        }
+
+        .filtro {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filtro select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .tabela-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #2563eb;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .agendada {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .realizada {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .cancelada {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        button {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            margin: 2px;
+        }
+
+        .btn-cancelar {
+            background-color: #dc2626;
+        }
+
+        .btn-realizada {
+            background-color: #16a34a;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        @media (max-width: 800px) {
+            nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .topo {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            th,
+            td {
+                font-size: 14px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 500px) {
+            main {
+                margin: 25px auto;
+            }
+
+            nav div {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .tabela-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h1>Clínica</h1>
+
+        <div>
+            <a href="index.html">Dashboard</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="agendar.html">Agendar</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <div class="topo">
+            <h2>Consultas</h2>
+
+            <div class="filtro">
+                <label for="filtroStatus">Status:</label>
+
+                <select id="filtroStatus">
+                    <option value="todos">Todos</option>
+                    <option value="agendada">Agendadas</option>
+                    <option value="realizada">Realizadas</option>
+                    <option value="cancelada">Canceladas</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tabela-container">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Médico</th>
+                        <th>CRM</th>
+                        <th>Especialidade</th>
+                        <th>Data/Hora</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tabelaConsultas">
+                    <!-- Preenchido pelo consultas.js -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+    <script src="./js/consultas.js"></script>
+
+</body>
+</html>

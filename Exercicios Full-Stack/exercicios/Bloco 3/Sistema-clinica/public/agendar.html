@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Consulta - Clínica</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        nav {
+            background-color: #2563eb;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            color: white;
+            font-size: 24px;
+        }
+
+        nav div {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .mensagem {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .sucesso {
+            display: block;
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .erro {
+            display: block;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 700px) {
+            nav {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav div {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            main {
+                margin: 25px auto;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h1>Clínica</h1>
+
+        <div>
+            <a href="index.html">Dashboard</a>
+            <a href="consultas.html">Consultas</a>
+            <a href="agendar.html">Agendar</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <div class="form-container">
+
+            <h2>Agendar Consulta</h2>
+
+            <form id="formAgendar">
+
+                <div class="campo">
+                    <label for="paciente">Paciente</label>
+
+                    <input
+                        type="text"
+                        id="paciente"
+                        placeholder="Nome do paciente"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="especialidade">Especialidade</label>
+
+                    <select id="especialidade" required>
+                        <option value="">Selecione uma especialidade</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="medico">Médico</label>
+
+                    <select id="medico" required>
+                        <option value="">Selecione um médico</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="data_hora">Data e hora</label>
+
+                    <input
+                        type="datetime-local"
+                        id="data_hora"
+                        required
+                    >
+                </div>
+
+                <div class="campo">
+                    <label for="observacao">Observação</label>
+
+                    <textarea
+                        id="observacao"
+                        placeholder="Observações da consulta..."
+                    ></textarea>
+                </div>
+
+                <button type="submit">
+                    Agendar Consulta
+                </button>
+
+            </form>
+
+            <div id="mensagem" class="mensagem"></div>
+
+        </div>
+
+    </main>
+
+    <script src="./js/agendar.js"></script>
+
+</body>
+</html>

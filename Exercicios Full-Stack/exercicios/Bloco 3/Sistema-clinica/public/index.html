@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Clínica - Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        /* MENU */
+
+        nav {
+            background: #2563eb;
+            color: white;
+
+            padding: 20px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav div {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* CONTEÚDO */
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        /* CARDS */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+
+            color: #555;
+
+            font-size: 17px;
+        }
+
+        .card p {
+            margin-bottom: 0;
+
+            font-size: 38px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+        }
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 900px) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 20px;
+            }
+
+            nav div {
+                gap: 15px;
+            }
+
+            main {
+                margin-top: 25px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>Clínica</h2>
+
+        <div>
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="consultas.html">
+                Consultas
+            </a>
+
+            <a href="agendar.html">
+                Agendar
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main>
+
+        <h1>Dashboard</h1>
+
+
+        <section class="cards">
+
+            <div class="card">
+
+                <h3>
+                    Total de consultas
+                </h3>
+
+                <p id="total">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Agendadas
+                </h3>
+
+                <p id="agendadas">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Realizadas
+                </h3>
+
+                <p id="realizadas">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Canceladas
+                </h3>
+
+                <p id="canceladas">
+                    0
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="./js/app.js"></script>
+
+</body>
+
+</html>
+
